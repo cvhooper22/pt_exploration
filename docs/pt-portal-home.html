@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { -webkit-font-smoothing: antialiased; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; background: #e9edf3; }
+  a { color: #1762d6; text-decoration: none; }
+  a:hover { color: #0f4baa; }
+  button { font-family: inherit; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  @keyframes riseIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+</style>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+</helmet>
+
+<div style="min-height: 100vh; background: #e9edf3; color: #151a21; display: flex; justify-content: center;">
+<div style="width: 100%; max-width: 1440px; background: #f2f5f9; display: grid; grid-template-columns: minmax(180px, 232px) minmax(0, 1fr); min-height: 100vh; border-left: 1px solid rgba(21,26,33,0.1); border-right: 1px solid rgba(21,26,33,0.1);">
+
+  <div style="background: #ffffff; border-right: 1px solid rgba(21,26,33,0.12); padding: 22px 16px; display: flex; flex-direction: column; gap: 24px;">
+    <div>
+      <div style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: #7c8593;">MGF Wellth</div>
+      <div style="margin-top: 4px; font-size: 15px; font-weight: 700;">Therapist console</div>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 4px;">
+      <sc-for list="{{ navItems }}" as="n" hint-placeholder-count="4">
+        <button onClick="{{ n.go }}" style="text-align: left; display: flex; align-items: center; gap: 10px; padding: 11px 12px; min-height: 44px; border-radius: 10px; border: 1px solid; font-size: 14px; font-weight: 600; transition: background .15s; background: {{ n.bg }}; color: {{ n.fg }}; border-color: {{ n.border }};">
+          <span style="flex: 1; min-width: 0;">{{ n.label }}</span>
+          <span style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 11px; padding: 2px 7px; border-radius: 999px; background: {{ n.badgeBg }}; color: {{ n.badgeInk }};">{{ n.badge }}</span>
+        </button>
+      </sc-for>
+    </div>
+
+    <div style="border-top: 1px solid rgba(21,26,33,0.1); padding-top: 16px;">
+      <div style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: #8b939f; padding: 0 4px;">Caseload</div>
+      <div style="margin-top: 10px; display: flex; flex-direction: column; gap: 9px;">
+        <sc-for list="{{ caseStats }}" as="c" hint-placeholder-count="3">
+          <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 8px; padding: 0 4px;">
+            <span style="font-size: 13px; color: #5f6875;">{{ c.label }}</span>
+            <span style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 15px; font-weight: 600; color: {{ c.ink }};">{{ c.value }}</span>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+
+    <div style="margin-top: auto; padding: 12px; border-radius: 12px; background: #151a21; color: #ffffff;">
+      <div style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.6);">Dana Whitfield, DPT</div>
+      <div style="margin-top: 6px; font-size: 13px; line-height: 1.45; color: rgba(255,255,255,0.82);">Riverside Physical Therapy</div>
+      <a href="./PT Portal - Patient Setup.dc.html" style="margin-top: 10px; display: flex; align-items: center; justify-content: center; min-height: 40px; border-radius: 9px; background: #ffffff; color: #151a21; font-size: 13px; font-weight: 700;">Open Joanne's setup</a>
+    </div>
+  </div>
+
+  <div style="min-width: 0; display: flex; flex-direction: column;">
+
+    <div style="position: sticky; top: 0; z-index: 5; background: rgba(242,245,249,0.95); backdrop-filter: blur(8px); border-bottom: 1px solid rgba(21,26,33,0.12); padding: 20px 32px 18px;">
+      <div style="display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; flex-wrap: wrap;">
+        <div style="min-width: 0;">
+          <div style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: #7c8593;">{{ kicker }}</div>
+          <h1 style="margin: 6px 0 0; font-size: 27px; font-weight: 700; letter-spacing: -0.018em;">{{ title }}</h1>
+          <p style="margin: 7px 0 0; font-size: 15px; line-height: 1.45; color: #5f6875; max-width: 62ch; text-wrap: pretty;">{{ subtitle }}</p>
+        </div>
+        <a href="./PT Portal - Patient Setup.dc.html" style="display: flex; align-items: center; min-height: 42px; padding: 0 18px; border-radius: 9px; background: #151a21; color: #ffffff; font-size: 14px; font-weight: 700;" style-hover="background: #33404f; color: #ffffff;">New program</a>
+      </div>
+    </div>
+
+    <div style="padding: 26px 32px 60px;">
+
+      <sc-if value="{{ isToday }}" hint-placeholder-val="{{ true }}">
+        <div style="animation: riseIn .28s ease both; display: flex; flex-wrap: wrap; gap: 18px; align-items: flex-start;">
+
+          <div style="display: flex; flex-direction: column; gap: 18px; flex: 3 1 460px; min-width: 0;">
+            <div style="background: #ffffff; border: 1px solid rgba(21,26,33,0.12); border-radius: 18px; padding: 20px; box-shadow: 0 1px 2px rgba(21,26,33,0.05);">
+              <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px;">
+                <div style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: #5f6875;">Needs you today</div>
+                <div style="font-size: 13px; color: #7c8593;">{{ needsCount }}</div>
+              </div>
+              <div style="margin-top: 14px; display: flex; flex-direction: column; gap: 9px;">
+                <sc-for list="{{ needsList }}" as="n" hint-placeholder-count="4">
+                  <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 12px 14px; padding: 13px 15px; border-radius: 12px; border: 1px solid {{ n.border }}; background: {{ n.bg }};">
+                    <div style="width: 38px; height: 38px; flex: none; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; background: {{ n.avatarBg }}; color: #ffffff;">{{ n.initials }}</div>
+                    <div style="flex: 1 1 220px; min-width: 0;">
+                      <div style="font-size: 15px; font-weight: 700;">{{ n.name }}</div>
+                      <div style="margin-top: 3px; font-size: 13px; line-height: 1.4; color: #5f6875; text-wrap: pretty;">{{ n.reason }}</div>
+                    </div>
+                    <div style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600; padding: 5px 10px; border-radius: 999px; background: {{ n.tagBg }}; color: {{ n.tagInk }};">{{ n.tag }}</div>
+                    <button onClick="{{ n.act }}" style="min-height: 38px; padding: 0 14px; border-radius: 9px; border: 1px solid rgba(21,26,33,0.18); background: #ffffff; font-size: 13px; font-weight: 700; color: #151a21;" style-hover="background: #eef2f8;">{{ n.action }}</button>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+
+            <div style="background: #ffffff; border: 1px solid rgba(21,26,33,0.12); border-radius: 18px; padding: 20px; box-shadow: 0 1px 2px rgba(21,26,33,0.05);">
+              <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px;">
+                <div style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: #5f6875;">Caseload adherence · last 7 days</div>
+                <button onClick="{{ goPatients }}" style="background: none; border: none; padding: 4px 0; font-size: 13px; font-weight: 700; color: #1762d6;">All patients</button>
+              </div>
+              <div style="margin-top: 16px; display: flex; flex-direction: column; gap: 11px;">
+                <sc-for list="{{ adherenceBars }}" as="a" hint-placeholder-count="6">
+                  <div style="display: flex; align-items: center; gap: 14px;">
+                    <div style="width: 150px; flex: none; font-size: 14px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ a.name }}</div>
+                    <div style="flex: 1; min-width: 0; height: 12px; border-radius: 999px; background: rgba(21,26,33,0.07); overflow: hidden;">
+                      <div style="height: 100%; border-radius: 999px; transition: width .4s ease; background: {{ a.color }}; width: {{ a.pct }}%;"></div>
+                    </div>
+                    <div style="width: 54px; flex: none; text-align: right; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 14px; font-weight: 600; color: {{ a.color }};">{{ a.label }}</div>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 14px; flex: 1 1 300px; min-width: 0;">
+            <div style="background: #ffffff; border: 1px solid rgba(21,26,33,0.12); border-radius: 18px; padding: 18px;">
+              <div style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #5f6875;">Today's visits</div>
+              <div style="margin-top: 12px; display: flex; flex-direction: column; gap: 8px;">
+                <sc-for list="{{ visits }}" as="v" hint-placeholder-count="4">
+                  <div style="display: flex; align-items: center; gap: 12px; padding: 11px 12px; border-radius: 11px; border: 1px solid {{ v.border }}; background: {{ v.bg }};">
+                    <div style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px; font-weight: 600; color: {{ v.timeInk }}; width: 58px; flex: none;">{{ v.time }}</div>
+                    <div style="flex: 1; min-width: 0;">
+                      <div style="font-size: 14px; font-weight: 600;">{{ v.name }}</div>
+                      <div style="font-size: 12px; color: #5f6875;">{{ v.purpose }}</div>
+                    </div>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+
+            <div style="background: #ffffff; border: 1px solid rgba(21,26,33,0.12); border-radius: 18px; padding: 18px;">
+              <div style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #5f6875;">Assessments due</div>
+              <div style="margin-top: 12px; display: flex; flex-direction: column; gap: 9px;">
+                <sc-for list="{{ dueAssessments }}" as="d" hint-placeholder-count="4">
+                  <div style="display: flex; align-items: center; gap: 10px;">
+                    <span style="width: 8px; height: 8px; border-radius: 50%; flex: none; background: {{ d.dot }};"></span>
+                    <div style="flex: 1; min-width: 0;">
+                      <div style="font-size: 14px; font-weight: 600;">{{ d.name }}</div>
+                      <div style="font-size: 12px; color: #5f6875;">{{ d.section }}</div>
+                    </div>
+                    <div style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12px; color: {{ d.dot }};">{{ d.when }}</div>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+
+            <div style="background: #e5ecf8; border: 1px solid rgba(23,98,214,0.3); border-radius: 18px; padding: 18px;">
+              <div style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #12509f;">Message queue</div>
+              <p style="margin: 10px 0 0; font-size: 14px; line-height: 1.5; color: #12509f; text-wrap: pretty;">3 patient notes waiting on a reply. Two mention pain during lower-body days.</p>
+              <button onClick="{{ goPatients }}" style="margin-top: 12px; width: 100%; min-height: 42px; border-radius: 10px; border: none; background: #1762d6; color: #ffffff; font-size: 14px; font-weight: 700;" style-hover="background: #0f4baa;">Read and reply</button>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isPatients }}" hint-placeholder-val="{{ false }}">
+        <div style="animation: riseIn .28s ease both; display: flex; flex-direction: column; gap: 16px;">
+          <div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center;">
+            <sc-for list="{{ filters }}" as="f" hint-placeholder-count="4">
+              <button onClick="{{ f.pick }}" style="padding: 9px 15px; min-height: 40px; border-radius: 999px; border: 1.5px solid; font-size: 13px; font-weight: 700; transition: all .15s; background: {{ f.bg }}; color: {{ f.fg }}; border-color: {{ f.border }};">{{ f.label }}</button>
+            </sc-for>
+            <div style="margin-left: auto; font-size: 13px; color: #7c8593;">{{ rosterCount }}</div>
+          </div>
+
+          <div style="background: #ffffff; border: 1px solid rgba(21,26,33,0.12); border-radius: 18px; padding: 6px 20px 14px; box-shadow: 0 1px 2px rgba(21,26,33,0.05); overflow-x: auto;">
+            <div style="min-width: 860px;">
+              <div style="display: grid; grid-template-columns: minmax(190px, 1.4fr) 132px minmax(0, 1fr) 118px 120px 110px; gap: 14px; padding: 14px 0 10px; border-bottom: 1px solid rgba(21,26,33,0.12);">
+                <sc-for list="{{ rosterHeads }}" as="h" hint-placeholder-count="6">
+                  <div style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: #7c8593;">{{ h.label }}</div>
+                </sc-for>
+              </div>
+
+              <sc-for list="{{ roster }}" as="p" hint-placeholder-count="7">
+                <div style="display: grid; grid-template-columns: minmax(190px, 1.4fr) 132px minmax(0, 1fr) 118px 120px 110px; gap: 14px; align-items: center; padding: 14px 0; border-bottom: 1px solid rgba(21,26,33,0.08);">
+                  <div style="display: flex; align-items: center; gap: 11px; min-width: 0;">
+                    <div style="width: 36px; height: 36px; flex: none; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; background: {{ p.avatarBg }}; color: #ffffff;">{{ p.initials }}</div>
+                    <div style="min-width: 0;">
+                      <div style="font-size: 15px; font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ p.name }}</div>
+                      <div style="font-size: 12px; color: #5f6875; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ p.dx }}</div>
+                    </div>
+                  </div>
+
+                  <div style="font-size: 13px; color: #5f6875;">{{ p.phase }}</div>
+
+                  <div style="display: flex; align-items: center; gap: 10px; min-width: 0;">
+                    <div style="flex: 1; min-width: 40px; height: 10px; border-radius: 999px; background: rgba(21,26,33,0.07); overflow: hidden;">
+                      <div style="height: 100%; border-radius: 999px; background: {{ p.color }}; width: {{ p.pct }}%;"></div>
+                    </div>
+                    <div style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px; font-weight: 600; color: {{ p.color }};">{{ p.pctLabel }}</div>
+                  </div>
+
+                  <div style="font-size: 13px; color: {{ p.lastInk }};">{{ p.last }}</div>
+
+                  <div style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; font-weight: 600; padding: 5px 10px; border-radius: 999px; text-align: center; background: {{ p.statusBg }}; color: {{ p.statusInk }};">{{ p.status }}</div>
+
+                  <a href="./PT Portal - Patient Setup.dc.html" style="display: flex; align-items: center; justify-content: center; min-height: 38px; border-radius: 9px; border: 1px solid rgba(21,26,33,0.18); background: #ffffff; font-size: 13px; font-weight: 700; color: #151a21;" style-hover="background: #eef2f8; color: #151a21;">Open</a>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isLibrary }}" hint-placeholder-val="{{ false }}">
+        <div style="animation: riseIn .28s ease both; display: flex; flex-wrap: wrap; gap: 18px; align-items: flex-start;">
+
+          <div style="background: #ffffff; border: 1px solid rgba(21,26,33,0.12); border-radius: 18px; padding: 14px; flex: 1 1 200px; max-width: 240px; min-width: 190px;">
+            <div style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: #7c8593; padding: 0 6px;">Categories</div>
+            <div style="margin-top: 10px; display: flex; flex-direction: column; gap: 4px;">
+              <sc-for list="{{ libCats }}" as="c" hint-placeholder-count="5">
+                <button onClick="{{ c.pick }}" style="display: flex; align-items: center; gap: 9px; text-align: left; padding: 10px 11px; min-height: 42px; border-radius: 10px; border: 1px solid; font-size: 14px; font-weight: 600; transition: background .15s; background: {{ c.bg }}; color: {{ c.fg }}; border-color: {{ c.border }};">
+                  <span style="width: 9px; height: 9px; border-radius: 50%; flex: none; background: {{ c.dot }};"></span>
+                  <span style="flex: 1; min-width: 0;">{{ c.label }}</span>
+                  <span style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 11px; color: #7c8593;">{{ c.count }}</span>
+                </button>
+              </sc-for>
+            </div>
+          </div>
+
+          <div style="background: #ffffff; border: 1px solid rgba(21,26,33,0.12); border-radius: 18px; padding: 20px; flex: 3 1 360px; min-width: 0; box-shadow: 0 1px 2px rgba(21,26,33,0.05);">
+            <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 14px; flex-wrap: wrap;">
+              <div>
+                <div style="font-size: 19px; font-weight: 700; letter-spacing: -0.01em;">{{ libTitle }}</div>
+                <div style="margin-top: 4px; font-size: 14px; color: #5f6875;">{{ libSub }}</div>
+              </div>
+              <button onClick="{{ noop }}" style="min-height: 40px; padding: 0 15px; border-radius: 9px; border: 1px dashed rgba(21,26,33,0.28); background: #f7f9fc; font-size: 13px; font-weight: 700; color: #3c4450;" style-hover="background: #eef2f8;">+ Add exercise</button>
+            </div>
+
+            <div style="margin-top: 16px; display: flex; flex-direction: column; gap: 8px;">
+              <sc-for list="{{ libItems }}" as="e" hint-placeholder-count="6">
+                <button onClick="{{ e.select }}" style="display: flex; align-items: center; flex-wrap: wrap; gap: 10px 14px; text-align: left; padding: 13px 15px; border-radius: 12px; border: 1px solid; transition: all .13s; background: {{ e.bg }}; border-color: {{ e.border }};">
+                  <div style="flex: 1 1 200px; min-width: 0;">
+                    <div style="font-size: 15px; font-weight: 600; color: #151a21;">{{ e.name }}</div>
+                    <div style="margin-top: 3px; font-size: 13px; color: #5f6875;">{{ e.meta }}</div>
+                  </div>
+                  <div style="display: flex; gap: 5px; flex-wrap: wrap; justify-content: flex-end;">
+                    <sc-for list="{{ e.tags }}" as="t" hint-placeholder-count="2">
+                      <span style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; padding: 4px 8px; border-radius: 999px; background: rgba(21,26,33,0.06); color: #5f6875;">{{ t.label }}</span>
+                    </sc-for>
+                  </div>
+                  <div style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12px; color: #7c8593; width: 74px; flex: none; text-align: right;">{{ e.used }}</div>
+                </button>
+              </sc-for>
+            </div>
+          </div>
+
+          <div style="background: #ffffff; border: 1px solid rgba(21,26,33,0.12); border-radius: 18px; padding: 18px; flex: 1 1 280px; min-width: 0;">
+            <div style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #5f6875;">{{ detailKicker }}</div>
+            <div style="margin-top: 8px; font-size: 18px; font-weight: 700; line-height: 1.2; letter-spacing: -0.01em;">{{ detailName }}</div>
+
+            <div style="margin-top: 14px; border-radius: 12px; overflow: hidden; border: 1px solid rgba(21,26,33,0.12); background: repeating-linear-gradient(135deg, #eef2f8 0 10px, #e4eaf3 10px 20px); height: 152px; display: flex; align-items: center; justify-content: center;">
+              <div style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: #7c8593; text-align: center; padding: 0 16px;">demo clip / photo</div>
+            </div>
+
+            <div style="margin-top: 14px; display: flex; flex-direction: column; gap: 10px;">
+              <sc-for list="{{ detailRows }}" as="r" hint-placeholder-count="4">
+                <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 10px;">
+                  <div style="font-size: 13px; color: #5f6875;">{{ r.label }}</div>
+                  <div style="font-size: 14px; font-weight: 600; text-align: right;">{{ r.value }}</div>
+                </div>
+              </sc-for>
+            </div>
+
+            <p style="margin: 14px 0 0; font-size: 13px; line-height: 1.5; color: #5f6875; text-wrap: pretty;">{{ detailCue }}</p>
+
+            <a href="./PT Portal - Patient Setup.dc.html" style="margin-top: 14px; display: flex; align-items: center; justify-content: center; min-height: 44px; border-radius: 10px; background: #1762d6; color: #ffffff; font-size: 14px; font-weight: 700;" style-hover="background: #0f4baa; color: #ffffff;">Add to a patient's plan</a>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isAssessments }}" hint-placeholder-val="{{ false }}">
+        <div style="animation: riseIn .28s ease both; display: flex; flex-direction: column; gap: 18px;">
+
+          <div>
+            <div style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: #5f6875;">Bundles</div>
+            <div style="margin-top: 12px; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 12px;">
+              <sc-for list="{{ bundleCards }}" as="b" hint-placeholder-count="4">
+                <button onClick="{{ b.pick }}" style="text-align: left; padding: 16px; border-radius: 16px; border: 1.5px solid; transition: all .15s; background: {{ b.bg }}; border-color: {{ b.border }};">
+                  <div style="font-size: 16px; font-weight: 700; color: #151a21;">{{ b.name }}</div>
+                  <div style="margin-top: 5px; font-size: 13px; line-height: 1.45; color: #5f6875; text-wrap: pretty;">{{ b.blurb }}</div>
+                  <div style="margin-top: 12px; display: flex; align-items: baseline; justify-content: space-between; gap: 10px; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 11px; color: #7c8593;">
+                    <span>{{ b.count }}</span>
+                    <span>{{ b.patients }}</span>
+                  </div>
+                </button>
+              </sc-for>
+            </div>
+          </div>
+
+          <div style="display: flex; flex-wrap: wrap; gap: 18px; align-items: flex-start;">
+
+            <div style="flex: 3 1 420px; min-width: 0; background: #ffffff; border: 1px solid rgba(21,26,33,0.12); border-radius: 18px; padding: 20px; box-shadow: 0 1px 2px rgba(21,26,33,0.05);">
+              <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 14px; flex-wrap: wrap;">
+                <div>
+                  <div style="font-size: 18px; font-weight: 700; letter-spacing: -0.01em;">{{ bundleTitle }}</div>
+                  <div style="margin-top: 4px; font-size: 14px; color: #5f6875;">{{ bundleNote }}</div>
+                </div>
+                <a href="./PT Portal - Patient Setup.dc.html" style="min-height: 40px; padding: 0 15px; display: flex; align-items: center; border-radius: 9px; border: 1px solid rgba(23,98,214,0.35); background: #e5ecf8; color: #12509f; font-size: 13px; font-weight: 700;" style-hover="background: #d7e3f6; color: #12509f;">Assign to a patient</a>
+              </div>
+
+              <sc-for list="{{ sectionGroups }}" as="g" hint-placeholder-count="4">
+                <div style="margin-top: 18px;">
+                  <div style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: #7c8593;">{{ g.name }}</div>
+                  <div style="margin-top: 9px; display: flex; flex-direction: column; gap: 8px;">
+                    <sc-for list="{{ g.items }}" as="s" hint-placeholder-count="3">
+                      <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 10px 14px; padding: 12px 14px; border-radius: 12px; border: 1px solid; background: {{ s.bg }}; border-color: {{ s.border }};">
+                        <button onClick="{{ s.toggle }}" style="width: 26px; height: 26px; flex: none; border-radius: 7px; border: 1.5px solid; display: flex; align-items: center; justify-content: center; font-size: 14px; line-height: 1; background: {{ s.boxBg }}; color: {{ s.boxInk }}; border-color: {{ s.boxBorder }};">{{ s.mark }}</button>
+                        <div style="flex: 1 1 200px; min-width: 0;">
+                          <div style="font-size: 15px; font-weight: 600;">{{ s.name }}</div>
+                          <div style="margin-top: 3px; font-size: 13px; color: #5f6875;">{{ s.detail }}</div>
+                        </div>
+                        <div style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600; padding: 4px 9px; border-radius: 999px; background: {{ s.whereBg }}; color: {{ s.whereInk }};">{{ s.where }}</div>
+                        <div style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12px; color: #7c8593; width: 58px; text-align: right;">{{ s.mins }}</div>
+                        <div style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12px; color: #7c8593; width: 82px; text-align: right;">{{ s.used }}</div>
+                      </div>
+                    </sc-for>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+
+            <div style="flex: 1 1 290px; min-width: 0; display: flex; flex-direction: column; gap: 14px;">
+              <div style="background: #ffffff; border: 1px solid rgba(21,26,33,0.12); border-radius: 18px; padding: 18px;">
+                <div style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #5f6875;">Latest vs. previous</div>
+                <div style="margin-top: 12px; display: flex; flex-direction: column; gap: 12px;">
+                  <sc-for list="{{ resultRows }}" as="r" hint-placeholder-count="5">
+                    <div style="padding-bottom: 12px; border-bottom: 1px solid rgba(21,26,33,0.08);">
+                      <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 10px;">
+                        <div style="font-size: 14px; font-weight: 700;">{{ r.name }}</div>
+                        <div style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 11px; color: {{ r.whenInk }};">{{ r.when }}</div>
+                      </div>
+                      <div style="margin-top: 3px; font-size: 13px; color: #5f6875;">{{ r.section }}</div>
+                      <div style="margin-top: 7px; display: flex; align-items: center; gap: 9px; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px;">
+                        <span style="color: #a4acb7;">{{ r.prev }}</span>
+                        <span style="color: {{ r.ink }}; font-weight: 600;">{{ r.mark }}</span>
+                        <span style="color: {{ r.ink }}; font-weight: 600;">{{ r.now }}</span>
+                      </div>
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+
+              <div style="background: #ffffff; border: 1px dashed rgba(21,26,33,0.22); border-radius: 18px; padding: 18px;">
+                <div style="font-size: 14px; font-weight: 700;">Clinic vs. home</div>
+                <p style="margin: 8px 0 0; font-size: 14px; line-height: 1.5; color: #5f6875; text-wrap: pretty;">Sections marked Clinic never appear in the patient app — they wait on your visit list instead. Home sections she records herself, and the numbers land back here.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isTemplates }}" hint-placeholder-val="{{ false }}">
+        <div style="animation: riseIn .28s ease both; display: flex; flex-direction: column; gap: 18px;">
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(310px, 1fr)); gap: 14px;">
+            <sc-for list="{{ templates }}" as="t" hint-placeholder-count="4">
+              <div style="background: #ffffff; border: 1px solid rgba(21,26,33,0.12); border-radius: 18px; padding: 18px; display: flex; flex-direction: column; gap: 12px; box-shadow: 0 1px 2px rgba(21,26,33,0.05);">
+                <div>
+                  <div style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: #7c8593;">{{ t.kicker }}</div>
+                  <div style="margin-top: 6px; font-size: 17px; font-weight: 700; letter-spacing: -0.01em;">{{ t.name }}</div>
+                  <p style="margin: 6px 0 0; font-size: 13px; line-height: 1.45; color: #5f6875; text-wrap: pretty;">{{ t.blurb }}</p>
+                </div>
+
+                <div style="display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 4px;">
+                  <sc-for list="{{ t.week }}" as="d" hint-placeholder-count="7">
+                    <div style="border-radius: 6px; height: 34px; display: flex; flex-direction: column; gap: 2px; padding: 5px 3px; align-items: center; justify-content: center; background: {{ d.bg }};">
+                      <sc-for list="{{ d.bars }}" as="b" hint-placeholder-count="3">
+                        <div style="width: 16px; height: 4px; border-radius: 2px; background: {{ b.bg }};"></div>
+                      </sc-for>
+                    </div>
+                  </sc-for>
+                </div>
+
+                <div style="display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: auto;">
+                  <div style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12px; color: #5f6875;">{{ t.load }}</div>
+                  <a href="./PT Portal - Patient Setup.dc.html" style="min-height: 38px; padding: 0 14px; display: flex; align-items: center; border-radius: 9px; border: 1px solid rgba(23,98,214,0.35); background: #e5ecf8; color: #12509f; font-size: 13px; font-weight: 700;" style-hover="background: #d7e3f6; color: #12509f;">Use as start</a>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+
+          <div style="background: #ffffff; border: 1px dashed rgba(21,26,33,0.22); border-radius: 18px; padding: 20px; display: flex; gap: 20px; flex-wrap: wrap; align-items: center;">
+            <div style="flex: 1 1 380px; min-width: 0;">
+              <div style="font-size: 16px; font-weight: 700;">Templates are starting points, not prescriptions</div>
+              <p style="margin: 7px 0 0; font-size: 14px; line-height: 1.5; color: #5f6875; text-wrap: pretty;">Same principle as the workbook: there is no one way to write a plan. Pick the closest shape, then move blocks around a patient's real week.</p>
+            </div>
+            <button onClick="{{ noop }}" style="min-height: 44px; padding: 0 18px; border-radius: 10px; border: 1px solid rgba(21,26,33,0.2); background: #f7f9fc; font-size: 14px; font-weight: 700; color: #151a21;" style-hover="background: #eef2f8;">Save current plan as template</button>
+          </div>
+        </div>
+      </sc-if>
+
+    </div>
+  </div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:1000}}">
+class Component extends DCLogic {
+  state = { screen: 'today', filter: 'All', libCat: 'leStr', libPick: 'Sit to Stands to Goblet Squats', bundle: 'foundations' };
+
+  C = { cardio: '#1762d6', move: '#1f8f7a', str: '#c2661c', warn: '#c2661c', bad: '#b4321f' };
+
+  screens = [
+    { id: 'today', label: 'Today', kicker: 'Tuesday 9 September', title: 'Good morning, Dana', sub: 'Four patients drifted off plan since Friday, and two assessments come due this week.' },
+    { id: 'patients', label: 'Patients', kicker: 'Caseload', title: 'Patients', sub: 'Adherence is logged minutes against the plan you set, over the last seven days.' },
+    { id: 'library', label: 'Exercise library', kicker: 'Library', title: 'Exercise library', sub: 'Everything you prescribe from, grouped the way the workbook groups it. Doses here are your defaults — you can still change them per patient.' },
+    { id: 'assessments', label: 'Assessments', kicker: 'Assessments', title: 'Assessment bank', sub: 'Every section of the workbook lives here. Group the ones you use together into a bundle, then assign the bundle instead of ticking twelve boxes per patient.' },
+    { id: 'templates', label: 'Plan templates', kicker: 'Templates', title: 'Plan templates', sub: 'Week shapes you reuse. Drop one on a patient, then bend it to their real schedule.' }
+  ];
+
+  bundles = [
+    { id: 'foundations', name: 'Foundations', blurb: 'What you run on nearly everyone at intake.', sections: ['demo', 'rhr', 'mobility', 'grip', 'balance4'], cadence: 'Intake + every 6 weeks', patients: 9 },
+    { id: 'balance', name: 'Fall risk', blurb: 'Balance and gait battery for older adults.', sections: ['balance4', 'berg', 'dgi', 'rhr'], cadence: 'Intake + every 4 weeks', patients: 4 },
+    { id: 'cardio', name: 'Cardio progress', blurb: 'For deconditioning and endurance goals.', sections: ['rhr', 'mile', 'step'], cadence: 'Every 6 weeks', patients: 5 },
+    { id: 'strength', name: 'Strength baseline', blurb: 'Clinic-only. Needs your dynamometer and rack.', sections: ['grip', 'rm', 'endur'], cadence: 'Intake + every 8 weeks', patients: 3 }
+  ];
+
+  sections = [
+    { id: 'demo', group: 'Baseline', name: 'Demographics & HR zones', detail: 'Age, resting HR, zone table', where: 'Home', mins: 5, used: 11 },
+    { id: 'rhr', group: 'Baseline', name: 'Resting heart rate', detail: '3 morning readings, averaged', where: 'Home', mins: 3, used: 10 },
+    { id: 'mile', group: 'Cardiovascular', name: '1 Mile Walk Test', detail: 'Rockport formula → VO2 max', where: 'Home', mins: 20, used: 6 },
+    { id: 'step', group: 'Cardiovascular', name: '3 Minute Step Test', detail: "Queen's College formula", where: 'Clinic', mins: 8, used: 3 },
+    { id: 'run', group: 'Cardiovascular', name: '1.5 Mile Walk-Run Test', detail: 'Cooper formula, higher demand', where: 'Home', mins: 25, used: 1 },
+    { id: 'mobility', group: 'Movement & strength', name: 'Mobility screen', detail: '10 pass/fail checks, both sides', where: 'Home', mins: 12, used: 9 },
+    { id: 'grip', group: 'Movement & strength', name: 'Grip strength', detail: 'Dynamometer, seated + overhead', where: 'Clinic', mins: 6, used: 8 },
+    { id: 'endur', group: 'Movement & strength', name: 'Muscular endurance', detail: '30-second push-up and sit-up tests', where: 'Clinic', mins: 10, used: 4 },
+    { id: 'rm', group: 'Movement & strength', name: 'Strength testing (1RM)', detail: 'Estimated from rep maxes', where: 'Clinic', mins: 25, used: 3 },
+    { id: 'balance4', group: 'Balance & gait', name: '4 Stage Balance Test', detail: 'Four timed stances', where: 'Both', mins: 6, used: 7 },
+    { id: 'berg', group: 'Balance & gait', name: 'Berg Balance Scale', detail: '14 items, 0–4 each', where: 'Clinic', mins: 18, used: 4 },
+    { id: 'dgi', group: 'Balance & gait', name: 'Dynamic Gait Index', detail: '8 gait tasks', where: 'Clinic', mins: 12, used: 4 }
+  ];
+
+  results = [
+    { name: 'Joanne Alvarez', section: 'Mobility screen', prev: '6 / 10 pass', now: '8 / 10 pass', dir: 'up', when: 'Due today' },
+    { name: 'Denise Okafor', section: '4 Stage Balance Test', prev: 'Stage 3, 8s', now: 'Stage 4, 12s', dir: 'up', when: 'Due today' },
+    { name: 'Ray Whitmore', section: '1 Mile Walk Test', prev: '18:40 · VO2 26.1', now: '17:05 · VO2 28.4', dir: 'up', when: 'Thu' },
+    { name: 'Herb Lindqvist', section: 'Dynamic Gait Index', prev: '17 / 24', now: '15 / 24', dir: 'down', when: 'Overdue 5d' },
+    { name: 'Priya Raman', section: 'Grip strength', prev: '—', now: 'No baseline', dir: 'flat', when: 'Fri, in clinic' }
+  ];
+
+  patients = [
+    { name: 'Joanne Alvarez', dx: 'Post-op R TKA', phase: 'Week 3 of 12', pct: 69, last: 'Yesterday', status: 'At risk', flagged: true, reason: 'Third Wednesday skipped in a row; ratings down to 5 on lower-body days.', tag: 'Adherence', action: 'Adjust plan' },
+    { name: 'Marcus Bell', dx: 'Chronic low back', phase: 'Week 7 of 8', pct: 94, last: 'Today', status: 'On track', flagged: false },
+    { name: 'Priya Raman', dx: 'Rotator cuff repair', phase: 'Week 2 of 16', pct: 41, last: '6 days ago', status: 'Behind', flagged: true, reason: 'No sessions logged since last Wednesday. Never opened the upper body block.', tag: 'Silent', action: 'Message' },
+    { name: 'Denise Okafor', dx: 'Balance / fall risk', phase: 'Week 5 of 10', pct: 88, last: 'Today', status: 'On track', flagged: false },
+    { name: 'Ray Whitmore', dx: 'Deconditioning', phase: 'Week 9 of 12', pct: 77, last: '2 days ago', status: 'On track', flagged: false },
+    { name: 'Sofia Cruz', dx: 'Ankle sprain, grade II', phase: 'Week 1 of 6', pct: 52, last: '3 days ago', status: 'New', flagged: true, reason: 'Onboarded Friday, still no baseline assessment recorded.', tag: 'Assessment', action: 'Assign' },
+    { name: 'Herb Lindqvist', dx: 'Parkinson’s, gait', phase: 'Week 14 of 24', pct: 63, last: '4 days ago', status: 'At risk', flagged: true, reason: 'Cardio minutes halved this week; reported dizziness on Thursday.', tag: 'Symptom', action: 'Review log' }
+  ];
+
+  libCats = [
+    { id: 'cardio', label: 'Cardio', dot: '#1762d6' },
+    { id: 'leStretch', label: 'LE stretches', dot: '#1f8f7a' },
+    { id: 'ueStretch', label: 'UE stretches', dot: '#1f8f7a' },
+    { id: 'leStr', label: 'LE strengthening', dot: '#c2661c' },
+    { id: 'ueStr', label: 'UE strengthening', dot: '#c2661c' },
+    { id: 'balance', label: 'Balance & gait', dot: '#5f6875' }
+  ];
+
+  library = {
+    cardio: [
+      { name: 'Treadmill walk — Zone 2', dose: '30 min', tags: ['Zone 2', 'Equip'], used: 9 },
+      { name: 'Recumbent bike', dose: '20 min', tags: ['Low impact'], used: 7 },
+      { name: 'Outdoor walk loop', dose: '30 min', tags: ['Home'], used: 12 },
+      { name: 'Pool laps', dose: '25 min', tags: ['Offload'], used: 3 },
+      { name: 'Elliptical', dose: '20 min', tags: ['Equip'], used: 4 }
+    ],
+    leStretch: [
+      { name: 'Half Kneel Hip Flexor Stretch', dose: '3 × 30s', tags: ['Home'], used: 11 },
+      { name: 'Seated Hamstring Stretch', dose: '3 × 30s', tags: ['Home'], used: 14 },
+      { name: 'Figure 4 Piriformis Stretch', dose: '2 × 45s', tags: ['Home'], used: 6 },
+      { name: 'Standing Calf Stretch', dose: '3 × 30s', tags: ['Home'], used: 10 },
+      { name: 'Quad Stretch at Counter', dose: '2 × 30s', tags: ['Support'], used: 5 }
+    ],
+    ueStretch: [
+      { name: 'Supine Pec Stretch', dose: '3 × 30s', tags: ['Home'], used: 8 },
+      { name: 'Pretzel Stretch', dose: '2 × 45s', tags: ['Home'], used: 4 },
+      { name: 'Lat Dorsi Stretch', dose: '3 × 30s', tags: ['Home'], used: 6 },
+      { name: 'Thoracic Rotation Mobilizations', dose: '2 × 10 ea', tags: ['Mobility'], used: 7 },
+      { name: 'Doorway Pec Stretch', dose: '3 × 30s', tags: ['Home'], used: 9 },
+      { name: 'Upper Trap Stretch', dose: '3 × 30s', tags: ['Home'], used: 12 },
+      { name: 'Levator Stretch', dose: '3 × 30s', tags: ['Home'], used: 5 }
+    ],
+    leStr: [
+      { name: 'Sit to Stands to Goblet Squats', dose: '2 × 10', tags: ['Progression'], used: 13 },
+      { name: 'Psoas Holds with SLS', dose: '2 × 8 ea', tags: ['Balance'], used: 5 },
+      { name: 'Standing Hip Flex, ABD, Ext Cycles', dose: '2 × 10 ea', tags: ['Support'], used: 9 },
+      { name: 'Single Leg RDL with UE Assistance', dose: '2 × 8 ea', tags: ['Balance'], used: 6 },
+      { name: 'Box Steps', dose: '2 × 10 ea', tags: ['Equip'], used: 11 },
+      { name: 'Heel Raises', dose: '2 × 15', tags: ['Home'], used: 10 }
+    ],
+    ueStr: [
+      { name: 'Table Push Ups', dose: '2 × 10', tags: ['Home'], used: 7 },
+      { name: 'Bent Over Row', dose: '2 × 12', tags: ['Band'], used: 8 },
+      { name: 'Prone Y - Flexion', dose: '2 × 10', tags: ['Scap'], used: 4 },
+      { name: 'Overhead Press', dose: '2 × 10', tags: ['Weight'], used: 6 },
+      { name: 'Free Weight Scaptions', dose: '2 × 12', tags: ['Weight'], used: 5 },
+      { name: 'Sidelying External Rotations', dose: '2 × 12 ea', tags: ['Cuff'], used: 9 }
+    ],
+    balance: [
+      { name: '4 Stage Balance progressions', dose: '4 × 10s', tags: ['Supervised'], used: 8 },
+      { name: 'Tandem walk, counter support', dose: '3 × 10 steps', tags: ['Home'], used: 6 },
+      { name: 'Single leg stance, eyes open', dose: '3 × 20s ea', tags: ['Home'], used: 7 },
+      { name: 'Sit to stand, no hands', dose: '2 × 8', tags: ['Timed'], used: 5 }
+    ]
+  };
+
+  cues = {
+    'Sit to Stands to Goblet Squats': 'Start from the highest chair she can manage without hands. Progress to a goblet hold once ten reps are clean and the knee stays over the second toe.',
+    default: 'Add a cue here and it shows up under the exercise in the patient app, right above the timer.'
+  };
+
+  initials(n) { return n.split(' ').map(w => w[0]).join('').slice(0, 2); }
+
+  avatarFor(p) {
+    if (p.status === 'Behind') return '#b4321f';
+    if (p.status === 'At risk') return '#c2661c';
+    if (p.status === 'New') return '#5f6875';
+    return '#1762d6';
+  }
+
+  pctColor(v) { return v >= 80 ? '#1f8f7a' : (v >= 60 ? '#c2661c' : '#b4321f'); }
+
+  renderVals() {
+    const st = this.state;
+    const scr = this.screens.find(s => s.id === st.screen) || this.screens[0];
+    const flagged = this.patients.filter(p => p.flagged);
+
+    const navItems = this.screens.map(s => {
+      const on = s.id === st.screen;
+      const badge = s.id === 'today' ? String(flagged.length)
+        : s.id === 'patients' ? String(this.patients.length)
+        : s.id === 'library' ? '33'
+        : s.id === 'assessments' ? String(this.sections.length) : '4';
+      return {
+        label: s.label, badge,
+        bg: on ? '#e5ecf8' : '#ffffff', fg: on ? '#12509f' : '#3c4450',
+        border: on ? 'rgba(23,98,214,0.35)' : 'rgba(21,26,33,0.1)',
+        badgeBg: on ? 'rgba(23,98,214,0.16)' : 'rgba(21,26,33,0.07)',
+        badgeInk: on ? '#12509f' : '#5f6875',
+        go: () => this.setState({ screen: s.id })
+      };
+    });
+
+    const caseStats = [
+      { label: 'Active patients', value: String(this.patients.length), ink: '#151a21' },
+      { label: 'Needs attention', value: String(flagged.length), ink: '#c2661c' },
+      { label: 'Avg. adherence', value: Math.round(this.patients.reduce((a, p) => a + p.pct, 0) / this.patients.length) + '%', ink: '#1f8f7a' }
+    ];
+
+    const tagColors = {
+      Adherence: ['rgba(194,102,28,0.14)', '#94480a'],
+      Silent: ['rgba(180,50,31,0.12)', '#8e2718'],
+      Assessment: ['rgba(23,98,214,0.12)', '#12509f'],
+      Symptom: ['rgba(180,50,31,0.12)', '#8e2718']
+    };
+
+    const needsList = flagged.map(p => {
+      const tc = tagColors[p.tag] || ['rgba(21,26,33,0.07)', '#5f6875'];
+      return {
+        name: p.name, reason: p.reason, tag: p.tag, action: p.action,
+        initials: this.initials(p.name), avatarBg: this.avatarFor(p),
+        bg: '#fdfbf8', border: 'rgba(194,102,28,0.26)',
+        tagBg: tc[0], tagInk: tc[1],
+        act: () => this.setState({ screen: 'patients' })
+      };
+    });
+
+    const adherenceBars = this.patients.slice().sort((a, b) => a.pct - b.pct).map(p => ({
+      name: p.name, pct: p.pct, label: p.pct + '%', color: this.pctColor(p.pct)
+    }));
+
+    const visits = [
+      { time: '8:30', name: 'Marcus Bell', purpose: 'Discharge planning', soon: true },
+      { time: '10:00', name: 'Joanne Alvarez', purpose: 'Re-test mobility + plan edit', soon: true },
+      { time: '11:15', name: 'Denise Okafor', purpose: '4-stage balance re-test' },
+      { time: '2:00', name: 'Sofia Cruz', purpose: 'Baseline assessment, in clinic' },
+      { time: '3:30', name: 'Herb Lindqvist', purpose: 'Gait review' }
+    ].map(v => ({
+      time: v.time, name: v.name, purpose: v.purpose,
+      bg: v.soon ? '#f4f8fe' : '#ffffff',
+      border: v.soon ? 'rgba(23,98,214,0.28)' : 'rgba(21,26,33,0.1)',
+      timeInk: v.soon ? '#12509f' : '#5f6875'
+    }));
+
+    const dueAssessments = [
+      { name: 'Joanne Alvarez', section: 'Mobility screen', when: 'Today', dot: '#b4321f' },
+      { name: 'Denise Okafor', section: '4 Stage Balance Test', when: 'Today', dot: '#b4321f' },
+      { name: 'Ray Whitmore', section: '1 Mile Walk Test', when: 'Thu', dot: '#c2661c' },
+      { name: 'Priya Raman', section: 'Grip strength', when: 'Fri', dot: '#c2661c' },
+      { name: 'Marcus Bell', section: 'Muscular endurance', when: 'Next wk', dot: '#5f6875' }
+    ];
+
+    const filterNames = ['All', 'Needs attention', 'On track', 'New'];
+    const filters = filterNames.map(f => {
+      const on = f === st.filter;
+      return { label: f, bg: on ? '#151a21' : '#ffffff', fg: on ? '#ffffff' : '#3c4450',
+        border: on ? '#151a21' : 'rgba(21,26,33,0.16)', pick: () => this.setState({ filter: f }) };
+    });
+
+    const filtered = this.patients.filter(p => {
+      if (st.filter === 'All') return true;
+      if (st.filter === 'Needs attention') return p.flagged;
+      if (st.filter === 'On track') return p.status === 'On track';
+      return p.status === 'New';
+    });
+
+    const statusColors = {
+      'On track': ['rgba(31,143,122,0.14)', '#17604f'],
+      'At risk': ['rgba(194,102,28,0.16)', '#94480a'],
+      'Behind': ['rgba(180,50,31,0.13)', '#8e2718'],
+      'New': ['rgba(21,26,33,0.07)', '#5f6875']
+    };
+
+    const roster = filtered.map(p => {
+      const sc = statusColors[p.status];
+      return {
+        name: p.name, dx: p.dx, phase: p.phase, pct: p.pct, pctLabel: p.pct + '%',
+        color: this.pctColor(p.pct), initials: this.initials(p.name), avatarBg: this.avatarFor(p),
+        last: p.last, lastInk: p.last.indexOf('days') > -1 ? '#b4321f' : '#5f6875',
+        status: p.status, statusBg: sc[0], statusInk: sc[1]
+      };
+    });
+
+    const rosterHeads = ['Patient', 'Phase', 'Adherence · 7d', 'Last logged', 'Status', ''].map(l => ({ label: l }));
+
+    const cat = this.libCats.find(c => c.id === st.libCat) || this.libCats[0];
+    const items = this.library[cat.id];
+    const libCats = this.libCats.map(c => {
+      const on = c.id === st.libCat;
+      return { label: c.label, dot: c.dot, count: this.library[c.id].length,
+        bg: on ? '#f2f5f9' : '#ffffff', fg: on ? '#151a21' : '#3c4450',
+        border: on ? 'rgba(21,26,33,0.18)' : 'transparent',
+        pick: () => this.setState({ libCat: c.id, libPick: this.library[c.id][0].name }) };
+    });
+    const libItems = items.map(e => {
+      const on = e.name === st.libPick;
+      return {
+        name: e.name, meta: 'Default dose ' + e.dose,
+        tags: e.tags.map(t => ({ label: t })),
+        used: e.used + ' patients',
+        bg: on ? '#f4f8fe' : '#ffffff',
+        border: on ? 'rgba(23,98,214,0.35)' : 'rgba(21,26,33,0.12)',
+        select: () => this.setState({ libPick: e.name })
+      };
+    });
+    const picked = items.find(e => e.name === st.libPick) || items[0];
+
+    const templates = [
+      { kicker: '5 days · from the workbook', name: 'Sample 5-day plan', blurb: 'Cardio every weekday, movement 3 days each side, strengthening 2 days each. The workbook plan, as-is.',
+        pattern: [[1,1,1],[1,1,1],[1,1,0],[1,1,1],[1,1,1],[0,0,0],[0,0,0]], load: '5 days · 340 min/wk' },
+      { kicker: '3 days · early post-op', name: 'Gentle restart', blurb: 'Short cardio, movement daily, strengthening only twice. For the first few weeks after surgery.',
+        pattern: [[1,1,1],[0,1,0],[1,1,0],[0,1,0],[1,1,1],[0,0,0],[0,0,0]], load: '5 days · 150 min/wk' },
+      { kicker: '4 days · balance focus', name: 'Fall-risk block', blurb: 'Balance work every session, cardio kept low impact, strengthening on the two heavier days.',
+        pattern: [[1,1,1],[1,1,0],[0,1,0],[1,1,1],[0,1,0],[0,0,0],[0,0,0]], load: '4 days · 220 min/wk' },
+      { kicker: '6 days · maintenance', name: 'Keep-it-going', blurb: 'For patients coming off discharge who want the rings to keep meaning something.',
+        pattern: [[1,1,0],[1,0,1],[1,1,0],[1,0,1],[1,1,0],[1,0,0],[0,0,0]], load: '6 days · 300 min/wk' }
+    ].map(t => Object.assign({}, t, {
+      week: t.pattern.map(d => ({
+        bg: (d[0] || d[1] || d[2]) ? '#f7f9fc' : 'rgba(21,26,33,0.04)',
+        bars: [
+          { bg: d[0] ? this.C.cardio : 'rgba(21,26,33,0.1)' },
+          { bg: d[1] ? this.C.move : 'rgba(21,26,33,0.1)' },
+          { bg: d[2] ? this.C.str : 'rgba(21,26,33,0.1)' }
+        ]
+      }))
+    }));
+
+    // ---- assessments ----
+    const bundle = this.bundles.find(b => b.id === st.bundle) || this.bundles[0];
+    const bundleCards = this.bundles.map(b => {
+      const on = b.id === st.bundle;
+      const mins = b.sections.reduce((a, id) => a + (this.sections.find(s => s.id === id) || { mins: 0 }).mins, 0);
+      return {
+        name: b.name, blurb: b.blurb, cadence: b.cadence,
+        count: b.sections.length + ' sections · ' + mins + ' min',
+        patients: b.patients + ' patients',
+        bg: on ? '#f4f8fe' : '#ffffff',
+        border: on ? 'rgba(23,98,214,0.4)' : 'rgba(21,26,33,0.12)',
+        pick: () => this.setState({ bundle: b.id })
+      };
+    });
+
+    const whereColors = { Clinic: ['rgba(194,102,28,0.14)', '#94480a'], Home: ['rgba(31,143,122,0.14)', '#17604f'], Both: ['rgba(23,98,214,0.12)', '#12509f'] };
+    const sectionGroups = ['Baseline', 'Cardiovascular', 'Movement & strength', 'Balance & gait'].map(g => ({
+      name: g,
+      items: this.sections.filter(s => s.group === g).map(s => {
+        const inBundle = bundle.sections.indexOf(s.id) > -1;
+        const wc = whereColors[s.where];
+        return {
+          name: s.name, detail: s.detail, where: s.where,
+          whereBg: wc[0], whereInk: wc[1],
+          mins: s.mins + ' min', used: s.used + ' patients',
+          mark: inBundle ? '✓' : '+',
+          bg: inBundle ? '#f4f8fe' : '#ffffff',
+          border: inBundle ? 'rgba(23,98,214,0.3)' : 'rgba(21,26,33,0.12)',
+          boxBg: inBundle ? '#1762d6' : '#ffffff',
+          boxInk: inBundle ? '#ffffff' : '#7c8593',
+          boxBorder: inBundle ? '#1762d6' : 'rgba(21,26,33,0.22)',
+          toggle: () => {
+            const next = inBundle ? bundle.sections.filter(x => x !== s.id) : bundle.sections.concat(s.id);
+            bundle.sections = next;
+            this.forceUpdate();
+          }
+        };
+      })
+    }));
+
+    const dirInk = { up: '#17604f', down: '#8e2718', flat: '#5f6875' };
+    const dirMark = { up: '↑', down: '↓', flat: '·' };
+    const resultRows = this.results.map(r => ({
+      name: r.name, section: r.section, prev: r.prev, now: r.now,
+      mark: dirMark[r.dir], ink: dirInk[r.dir], when: r.when,
+      whenInk: r.when.indexOf('Overdue') > -1 ? '#8e2718' : (r.when === 'Due today' ? '#94480a' : '#5f6875')
+    }));
+
+    return {
+      navItems, caseStats,
+      kicker: scr.kicker, title: scr.title, subtitle: scr.sub,
+      isToday: st.screen === 'today', isPatients: st.screen === 'patients',
+      isLibrary: st.screen === 'library', isTemplates: st.screen === 'templates',
+      isAssessments: st.screen === 'assessments',
+      bundleCards, sectionGroups, resultRows,
+      bundleTitle: bundle.name + ' bundle',
+      bundleNote: bundle.sections.length + ' sections selected · ' + bundle.cadence,
+      goPatients: () => this.setState({ screen: 'patients' }),
+      noop: () => {},
+
+      needsList, needsCount: flagged.length + ' of ' + this.patients.length + ' patients',
+      adherenceBars, visits, dueAssessments,
+
+      filters, roster, rosterHeads, rosterCount: roster.length + ' shown',
+
+      libCats, libItems, libTitle: cat.label,
+      libSub: items.length + ' exercises · used across ' + items.reduce((a, e) => a + e.used, 0) + ' active plans',
+      detailKicker: cat.label, detailName: picked.name,
+      detailRows: [
+        { label: 'Default dose', value: picked.dose },
+        { label: 'In use', value: picked.used + ' patients' },
+        { label: 'Goal type', value: picked.dose.indexOf('min') > -1 ? 'Time' : 'Reps' },
+        { label: 'Setting', value: picked.tags.join(' · ') }
+      ],
+      detailCue: this.cues[picked.name] || this.cues.default,
+
+      templates
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; height: 100%; background: #e6eaf0; }
+  body { -webkit-font-smoothing: antialiased; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; }
+  a { color: #1762d6; text-decoration: none; }
+  a:hover { color: #0f4baa; }
+  button { font-family: inherit; -webkit-tap-highlight-color: transparent; cursor: pointer; }
+  @keyframes riseIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+</style>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+</helmet>
+<div style="height: 100%; min-height: 100%; overflow-y: auto; background: #f2f5f9; color: #151a21; display: flex; justify-content: center;">
+<div style="width: 100%; max-width: 430px; min-height: 100%; padding: 0 20px 0; position: relative; display: flex; flex-direction: column;">
+
+<sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
+  <div style="animation: riseIn .3s ease both;">
+    <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 30px 0 4px;">
+      <div style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: #69727f;">MGF Wellth</div>
+      <div style="width: 40px; height: 40px; border-radius: 50%; background: #e0e7f2; border: 1px solid rgba(21,26,33,0.12); display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; color: #3c4450;">JA</div>
+    </div>
+
+    <h1 style="margin: 14px 0 0; font-size: 34px; line-height: 1.02; letter-spacing: -0.015em; font-weight: 700;">{{ greeting }}</h1>
+    <p style="margin: 8px 0 0; font-size: 17px; color: #5f6875;">{{ dateLine }}</p>
+
+    <div style="margin-top: 24px; border-radius: 18px; padding: 22px; background: {{ accent }}; color: #ffffff; box-shadow: 0 10px 24px rgba(23,98,214,0.22);">
+      <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px;">
+        <div style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; opacity: 0.82;">Next up</div>
+        <div style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; padding: 5px 9px; border-radius: 999px; background: rgba(255,255,255,0.18);">{{ dueLabel }}</div>
+      </div>
+      <div style="margin-top: 12px; font-size: 27px; line-height: 1.1; letter-spacing: -0.015em; font-weight: 700;">Foundations<br />Assessment</div>
+      <div style="margin-top: 10px; font-size: 16px; line-height: 1.45; opacity: 0.9;">{{ progressLine }}</div>
+      <div style="margin-top: 18px; height: 8px; border-radius: 99px; background: rgba(255,255,255,0.28); overflow: hidden;">
+        <div style="height: 100%; border-radius: 99px; background: #ffffff; transition: width .5s cubic-bezier(.2,.8,.2,1); width: {{ pct }}%;"></div>
+      </div>
+      <button onClick="{{ goEntry }}" style="margin-top: 18px; width: 100%; min-height: 62px; border-radius: 14px; border: none; background: #ffffff; color: #1762d6; font-size: 19px; font-weight: 700;" style-hover="background: #eef4ff;">{{ ctaLabel }}</button>
+    </div>
+
+    <div style="margin-top: 16px; background: #ffffff; border: 1px solid rgba(21,26,33,0.12); border-radius: 16px; padding: 18px;">
+      <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px;">
+        <div style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: #69727f;">This week</div>
+        <div style="font-size: 15px; color: #5f6875;">{{ weekLine }}</div>
+      </div>
+      <div style="margin-top: 14px; display: flex; gap: 8px;">
+        <sc-for list="{{ weekDots }}" as="d" hint-placeholder-count="7">
+          <div style="flex: 1;">
+            <div style="height: 26px; border-radius: 8px; border: 1.5px solid; background: {{ d.bg }}; border-color: {{ d.border }};"></div>
+            <div style="margin-top: 5px; text-align: center; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 10px; color: #9aa3b1;">{{ d.label }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+
+    <div style="margin: 26px 0 10px; font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase; color: #69727f; font-weight: 700;">Rest of the app</div>
+    <div style="display: flex; flex-direction: column; gap: 10px;">
+      <sc-for list="{{ laterCards }}" as="c" hint-placeholder-count="3">
+        <div style="background: #ffffff; border: 1px dashed rgba(21,26,33,0.2); border-radius: 14px; padding: 16px; display: flex; align-items: center; gap: 12px;">
+          <div style="flex: 1; min-width: 0;">
+            <div style="font-size: 18px; font-weight: 700; color: #3c4450;">{{ c.name }}</div>
+            <div style="margin-top: 4px; font-size: 15px; color: #7c8593; line-height: 1.4;">{{ c.blurb }}</div>
+          </div>
+          <div style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; padding: 6px 9px; border-radius: 8px; background: rgba(21,26,33,0.07); color: #69727f; white-space: nowrap;">{{ c.phase }}</div>
+        </div>
+      </sc-for>
+    </div>
+
+    <sc-if value="{{ showNote }}" hint-placeholder-val="{{ true }}">
+      <div style="margin-top: 20px; background: #eaeff6; border: 1px solid rgba(23,98,214,0.24); border-radius: 16px; padding: 18px;">
+        <div style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #1762d6;">From your therapist</div>
+        <p style="margin: 10px 0 0; font-size: 17px; line-height: 1.5; color: #2c333d; text-wrap: pretty;">“Record the balance section before Thursday so we have numbers to compare at your visit.”</p>
+        <div style="margin-top: 10px; font-size: 15px; color: #69727f;">Dr. Lin · Riverside Physical Therapy</div>
+      </div>
+    </sc-if>
+  </div>
+</sc-if>
+
+<sc-if value="{{ isAssess }}" hint-placeholder-val="{{ false }}">
+  <div style="animation: riseIn .3s ease both;">
+    <div style="padding: 30px 0 4px; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: #69727f;">Assessments</div>
+    <h1 style="margin: 12px 0 0; font-size: 32px; line-height: 1.05; letter-spacing: -0.015em; font-weight: 700;">Your baseline<br />and re-tests</h1>
+
+    <div style="margin: 26px 0 10px; font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase; color: #69727f; font-weight: 700;">Available now</div>
+    <button onClick="{{ goEntry }}" style="width: 100%; text-align: left; display: block; background: #ffffff; border: 1px solid rgba(23,98,214,0.4); border-radius: 16px; padding: 20px; color: #151a21;" style-hover="background: #eaeff6;">
+      <div style="display: flex; align-items: center; gap: 14px;">
+        <div style="flex: 1; min-width: 0;">
+          <div style="font-size: 22px; font-weight: 700; letter-spacing: -0.01em;">Foundations Assessment</div>
+          <div style="margin-top: 6px; font-size: 16px; color: #5f6875; line-height: 1.4;">{{ progressLine }}</div>
+          <div style="margin-top: 14px; height: 6px; border-radius: 99px; background: rgba(21,26,33,0.08); overflow: hidden;">
+            <div style="height: 100%; background: {{ accent }}; transition: width .4s ease; width: {{ pct }}%;"></div>
+          </div>
+        </div>
+        <div style="font-size: 30px; color: #9aa3b1; line-height: 1;">›</div>
+      </div>
+    </button>
+
+    <div style="margin: 26px 0 10px; font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase; color: #69727f; font-weight: 700;">Later</div>
+    <div style="display: flex; flex-direction: column; gap: 10px;">
+      <sc-for list="{{ futureTests }}" as="c" hint-placeholder-count="3">
+        <div style="background: #ffffff; border: 1px dashed rgba(21,26,33,0.2); border-radius: 14px; padding: 16px; display: flex; align-items: center; gap: 12px;">
+          <div style="flex: 1; min-width: 0;">
+            <div style="font-size: 18px; font-weight: 700; color: #3c4450;">{{ c.name }}</div>
+            <div style="margin-top: 4px; font-size: 15px; color: #7c8593; line-height: 1.4;">{{ c.blurb }}</div>
+          </div>
+          <div style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; padding: 6px 9px; border-radius: 8px; background: rgba(21,26,33,0.07); color: #69727f; white-space: nowrap;">{{ c.phase }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+</sc-if>
+
+<sc-if value="{{ isEntry }}" hint-placeholder-val="{{ false }}">
+  <div style="animation: riseIn .3s ease both;">
+    <div style="display: flex; align-items: center; gap: 14px; padding: 24px 0 6px;">
+      <button onClick="{{ goBack }}" style="width: 48px; height: 48px; flex: none; border-radius: 14px; background: #ffffff; border: 1px solid rgba(21,26,33,0.12); color: #2c333d; font-size: 22px; line-height: 1;" style-hover="border-color: rgba(21,26,33,0.4);">‹</button>
+      <div style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: #69727f;">{{ trail }}</div>
+    </div>
+
+    <h1 style="margin: 14px 0 0; font-size: 33px; line-height: 1.04; letter-spacing: -0.015em; font-weight: 700;">Foundations<br />Assessment</h1>
+    <p style="margin: 12px 0 0; font-size: 18px; line-height: 1.5; color: #5f6875; text-wrap: pretty;">Twenty-two checks across four sections. Everything saves as you go, so you can stop after one section and pick it up tomorrow.</p>
+
+    <div style="margin-top: 20px; display: flex; gap: 8px;">
+      <sc-for list="{{ metaChips }}" as="m" hint-placeholder-count="3">
+        <div style="flex: 1; background: #ffffff; border: 1px solid rgba(21,26,33,0.12); border-radius: 13px; padding: 14px 12px; text-align: center;">
+          <div style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 22px; font-weight: 600; color: #151a21;">{{ m.value }}</div>
+          <div style="margin-top: 4px; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #7c8593;">{{ m.label }}</div>
+        </div>
+      </sc-for>
+    </div>
+
+    <div style="margin-top: 16px; background: #ffffff; border: 1px solid rgba(21,26,33,0.12); border-radius: 16px; padding: 6px 18px;">
+      <sc-for list="{{ sectionRows }}" as="s" hint-placeholder-count="4">
+        <div style="padding: 15px 0; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid rgba(21,26,33,0.07);">
+          <div style="flex: 1; min-width: 0;">
+            <div style="font-size: 18px; font-weight: 700;">{{ s.name }}</div>
+            <div style="margin-top: 3px; font-size: 15px; color: #69727f;">{{ s.blurb }}</div>
+          </div>
+          <div style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; padding: 6px 10px; border-radius: 8px; white-space: nowrap; background: {{ s.chipBg }}; color: {{ s.chipFg }};">{{ s.status }}</div>
+        </div>
+      </sc-for>
+    </div>
+
+    <div style="margin-top: 20px; display: flex; flex-direction: column; gap: 10px;">
+      <a href="./Foundations Assessment Lively.dc.html" style="display: flex; align-items: center; justify-content: center; min-height: 68px; border-radius: 16px; background: #1762d6; color: #ffffff; font-size: 19px; font-weight: 700;" style-hover="background: #0f4baa; color: #ffffff;">{{ ctaLabel }}</a>
+      <a href="./Foundations Assessment Lively.dc.html" style="display: flex; align-items: center; justify-content: center; min-height: 58px; border-radius: 16px; border: 1.5px solid rgba(21,26,33,0.22); color: #151a21; font-size: 17px; font-weight: 600;" style-hover="border-color: #1762d6; color: #1762d6;">See my results sheet</a>
+    </div>
+    <div style="margin-top: 12px; font-size: 15px; line-height: 1.45; color: #7c8593; text-wrap: pretty;">This is the hand-off point into the assessment flow that is already built.</div>
+  </div>
+</sc-if>
+
+<sc-if value="{{ isStub }}" hint-placeholder-val="{{ false }}">
+  <div style="animation: riseIn .3s ease both;">
+    <div style="padding: 30px 0 4px; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: #69727f;">{{ stubKicker }}</div>
+    <h1 style="margin: 12px 0 0; font-size: 32px; line-height: 1.05; letter-spacing: -0.015em; font-weight: 700;">{{ stubTitle }}</h1>
+    <p style="margin: 12px 0 0; font-size: 18px; line-height: 1.5; color: #5f6875; text-wrap: pretty;">{{ stubSub }}</p>
+    <div style="margin-top: 22px; display: flex; flex-direction: column; gap: 10px;">
+      <sc-for list="{{ stubItems }}" as="i" hint-placeholder-count="4">
+        <div style="background: #ffffff; border: 1px dashed rgba(21,26,33,0.2); border-radius: 14px; padding: 16px;">
+          <div style="font-size: 18px; font-weight: 700; color: #3c4450;">{{ i.name }}</div>
+          <div style="margin-top: 4px; font-size: 15px; color: #7c8593; line-height: 1.4;">{{ i.blurb }}</div>
+        </div>
+      </sc-for>
+    </div>
+    <button onClick="{{ goHome }}" style="margin-top: 22px; width: 100%; min-height: 62px; border-radius: 16px; background: transparent; border: 1.5px solid rgba(21,26,33,0.22); color: #151a21; font-size: 17px; font-weight: 600;" style-hover="border-color: #1762d6; color: #1762d6;">Back to home</button>
+  </div>
+</sc-if>
+
+<div style="margin: auto -20px 0; padding-top: 28px; position: sticky; bottom: 0; z-index: 5;">
+  <div style="width: 100%; padding: 10px 12px 16px; background: rgba(242,245,249,0.94); border-top: 1px solid rgba(21,26,33,0.1); backdrop-filter: blur(8px); display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px;">
+    <button onClick="{{ tabHome.go }}" style="background: none; border: none; padding: 6px 0; min-height: 60px; display: flex; flex-direction: column; align-items: center; gap: 5px; color: {{ tabHome.fg }};">
+      <div style="width: 52px; height: 30px; border-radius: 999px; display: flex; align-items: center; justify-content: center; transition: background .2s; background: {{ tabHome.pill }};">
+        <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="{{ tabHome.stroke }}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M4 10.6 12 4l8 6.6"></path>
+          <path d="M6.4 10.2V20h11.2v-9.8"></path>
+          <path d="M10.2 20v-5.2h3.6V20"></path>
+        </svg>
+      </div>
+      <div style="font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;">Home</div>
+    </button>
+    <button onClick="{{ tabProgram.go }}" style="background: none; border: none; padding: 6px 0; min-height: 60px; display: flex; flex-direction: column; align-items: center; gap: 5px; color: {{ tabProgram.fg }};">
+      <div style="width: 52px; height: 30px; border-radius: 999px; display: flex; align-items: center; justify-content: center; transition: background .2s; background: {{ tabProgram.pill }};">
+        <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="{{ tabProgram.stroke }}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M4 9.4v5.2"></path>
+          <path d="M7.4 6.8v10.4"></path>
+          <path d="M16.6 6.8v10.4"></path>
+          <path d="M20 9.4v5.2"></path>
+          <path d="M7.4 12h9.2"></path>
+        </svg>
+      </div>
+      <div style="font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;">Program</div>
+    </button>
+    <button onClick="{{ tabAssess.go }}" style="background: none; border: none; padding: 6px 0; min-height: 60px; display: flex; flex-direction: column; align-items: center; gap: 5px; color: {{ tabAssess.fg }};">
+      <div style="width: 52px; height: 30px; border-radius: 999px; display: flex; align-items: center; justify-content: center; transition: background .2s; background: {{ tabAssess.pill }};">
+        <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="{{ tabAssess.stroke }}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="5" y="4.6" width="14" height="15.4" rx="2.4"></rect>
+          <path d="M9.4 4.6V3.4h5.2v1.2"></path>
+          <path d="M8.8 13.4l2.2 2.2 4.2-4.8"></path>
+        </svg>
+      </div>
+      <div style="font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;">Assess</div>
+    </button>
+    <button onClick="{{ tabYou.go }}" style="background: none; border: none; padding: 6px 0; min-height: 60px; display: flex; flex-direction: column; align-items: center; gap: 5px; color: {{ tabYou.fg }};">
+      <div style="width: 52px; height: 30px; border-radius: 999px; display: flex; align-items: center; justify-content: center; transition: background .2s; background: {{ tabYou.pill }};">
+        <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="{{ tabYou.stroke }}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="8.4" r="3.6"></circle>
+          <path d="M5.4 20c.9-3.4 3.5-5.2 6.6-5.2s5.7 1.8 6.6 5.2"></path>
+        </svg>
+      </div>
+      <div style="font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;">You</div>
+    </button>
+  </div>
+</div>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:430,&quot;height&quot;:900},&quot;doneSections&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:1,&quot;min&quot;:0,&quot;max&quot;:4,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;State&quot;},&quot;showNote&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;State&quot;},&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#1762d6&quot;,&quot;options&quot;:[&quot;#1762d6&quot;,&quot;#1f6f5c&quot;,&quot;#3d4bb8&quot;,&quot;#151a21&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Theme&quot;},&quot;initialTab&quot;:{&quot;editor&quot;:null,&quot;default&quot;:&quot;home&quot;,&quot;tsType&quot;:&quot;\&quot;home\&quot; | \&quot;program\&quot; | \&quot;assess\&quot; | \&quot;you\&quot;&quot;},&quot;initialScreen&quot;:{&quot;editor&quot;:null,&quot;default&quot;:null,&quot;tsType&quot;:&quot;\&quot;entry\&quot; | null&quot;}}">
+class Component extends DCLogic {
+  state = { tab: null, screen: undefined };
+
+  sections = [
+    { name: 'Mobility', blurb: '10 movement checks' },
+    { name: 'Balance', blurb: '5 timed stances' },
+    { name: 'Grip strength', blurb: '2 positions, both hands' },
+    { name: 'Cardio', blurb: '1 mile timed walk' }
+  ];
+
+  renderVals() {
+    const st = this.state;
+    const accent = this.props.accent ?? '#1762d6';
+    const done = Math.max(0, Math.min(4, this.props.doneSections ?? 1));
+    const total = this.sections.length;
+    const now = new Date();
+    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    const hour = now.getHours();
+
+    const tabDefs = [
+      { id: 'home', label: 'Home' },
+      { id: 'program', label: 'Program' },
+      { id: 'assess', label: 'Assess' },
+      { id: 'you', label: 'You' }
+    ];
+
+    const stubs = {
+      program: {
+        kicker: 'Program',
+        title: 'Exercise program',
+        sub: 'Planned for the release after the assessment ships — the assessment results are what generate this.',
+        items: [
+          { name: 'Daily session', blurb: 'The exercises your therapist assigned, in order, with video cues.' },
+          { name: 'Set and rep logging', blurb: 'Tick off each exercise, note pain or difficulty.' },
+          { name: 'Adherence view', blurb: 'What you completed this week versus what was assigned.' }
+        ]
+      },
+      you: {
+        kicker: 'You',
+        title: 'Profile and history',
+        sub: 'Also later. The assessment already stores results locally, so history is the natural next piece.',
+        items: [
+          { name: 'Assessment history', blurb: 'Every round side by side, so change is visible.' },
+          { name: 'Care team', blurb: 'Clinic, therapist, and how to reach them.' },
+          { name: 'Reminders', blurb: 'When to nudge you about an unfinished section.' }
+        ]
+      }
+    };
+
+    const tab = st.tab || this.props.initialTab || 'home';
+    const screen = st.screen === undefined ? (this.props.initialScreen || null) : st.screen;
+    const stub = stubs[tab];
+    const onEntry = screen === 'entry';
+
+    const vals = {
+      accent,
+      isHome: !onEntry && tab === 'home',
+      isAssess: !onEntry && tab === 'assess',
+      isEntry: onEntry,
+      isStub: !onEntry && !!stub,
+      greeting: hour < 12 ? 'Morning, Jordan' : hour < 18 ? 'Afternoon, Jordan' : 'Evening, Jordan',
+      dateLine: days[now.getDay()] + ', ' + months[now.getMonth()] + ' ' + now.getDate(),
+      showNote: this.props.showNote ?? true,
+      pct: Math.round(done / total * 100),
+      dueLabel: done >= total ? 'Complete' : 'Due Thursday',
+      progressLine: done === 0
+        ? 'Not started · 4 sections, about 45 minutes total'
+        : done >= total
+        ? 'All four sections recorded · retake any time'
+        : done + ' of ' + total + ' sections recorded · Balance is next',
+      ctaLabel: done === 0 ? 'Start the assessment' : done >= total ? 'Open the assessment' : 'Continue where I left off',
+      weekLine: done === 0 ? 'Nothing recorded yet' : '3 days recorded',
+      weekDots: (() => {
+        const out = [];
+        for (let i = 6; i >= 0; i--) {
+          const dt = new Date();
+          dt.setDate(dt.getDate() - i);
+          const on = done > 0 && [1, 3, 6].indexOf(6 - i) >= 0;
+          out.push({
+            label: 'SMTWTFS'[dt.getDay()],
+            bg: on ? accent : 'transparent',
+            border: on ? accent : 'rgba(21,26,33,0.18)'
+          });
+        }
+        return out;
+      })(),
+      laterCards: [
+        { name: 'Today\u2019s exercise session', blurb: 'Built from your assessment results', phase: 'Later' },
+        { name: 'Progress over time', blurb: 'Re-test scores side by side', phase: 'Later' },
+        { name: 'Messages', blurb: 'Notes to and from your therapist', phase: 'Later' }
+      ],
+      futureTests: [
+        { name: 'Balance re-test', blurb: 'Same protocol, 6 weeks after baseline', phase: 'Later' },
+        { name: 'Gait analysis', blurb: 'Video capture, reviewed by your therapist', phase: 'Later' },
+        { name: 'Pain and function survey', blurb: 'Short questionnaire, monthly', phase: 'Later' }
+      ],
+      metaChips: [
+        { value: '4', label: 'Sections' },
+        { value: '22', label: 'Tests' },
+        { value: '45m', label: 'If done at once' }
+      ],
+      sectionRows: this.sections.map((s, i) => {
+        const complete = i < done;
+        const next = i === done;
+        return Object.assign({ name: s.name, blurb: s.blurb, status: complete ? 'Recorded' : next ? 'Next' : 'Not yet' },
+          complete ? { chipBg: 'rgba(23,98,214,0.12)', chipFg: accent }
+          : next ? { chipBg: 'rgba(214,110,20,0.13)', chipFg: '#c2620f' }
+          : { chipBg: 'rgba(21,26,33,0.07)', chipFg: '#69727f' });
+      }),
+      trail: tab === 'assess' ? 'Assessments / Foundations' : 'Home / Foundations',
+      goEntry: () => this.setState({ screen: 'entry' }),
+      goBack: () => this.setState({ screen: null }),
+      goHome: () => this.setState({ tab: 'home', screen: null }),
+    };
+
+    tabDefs.forEach(t => {
+      const active = tab === t.id && !onEntry;
+      vals['tab' + t.id.charAt(0).toUpperCase() + t.id.slice(1)] = {
+        label: t.label,
+        fg: active ? accent : '#8b939f',
+        pill: active ? 'rgba(23,98,214,0.11)' : 'transparent',
+        stroke: active ? 2.1 : 1.7,
+        go: () => this.setState({ tab: t.id, screen: null })
+      };
+    });
+
+    if (stub) {
+      vals.stubKicker = stub.kicker;
+      vals.stubTitle = stub.title;
+      vals.stubSub = stub.sub;
+      vals.stubItems = stub.items;
+    }
+    return vals;
+  }
+}
+</script>
+</body>
+</html>

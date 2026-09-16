@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: #0d0e0d; }
+  body { -webkit-font-smoothing: antialiased; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; }
+  a { color: #c6ff4a; text-decoration: none; }
+  a:hover { color: #dcff8f; }
+  button { font-family: inherit; -webkit-tap-highlight-color: transparent; cursor: pointer; }
+  @keyframes pulseRing { 0% { box-shadow: 0 0 0 0 rgba(198,255,74,0.35); } 70% { box-shadow: 0 0 0 22px rgba(198,255,74,0); } 100% { box-shadow: 0 0 0 0 rgba(198,255,74,0); } }
+  @keyframes riseIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+</style>
+</helmet>
+<div style="min-height: 100vh; background: #0d0e0d; color: #f4f4f0; display: flex; justify-content: center; padding: 0 0 40px;">
+<div style="width: 100%; max-width: 560px; padding: 0 20px;">
+
+<sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
+  <div style="animation: riseIn .3s ease both;">
+    <div style="padding: 34px 0 10px;">
+      <div style="font-size: 13px; letter-spacing: 0.16em; text-transform: uppercase; color: #8e918a; font-weight: 700;">MGF Wellth · 2026</div>
+      <h1 style="margin: 10px 0 0; font-size: 40px; line-height: 1.02; letter-spacing: -0.03em; font-weight: 800;">Foundations<br />Assessment</h1>
+      <p style="margin: 14px 0 0; font-size: 18px; line-height: 1.5; color: #a8aba4; max-width: 26em; text-wrap: pretty;">Take it one section at a time. Everything you record is saved, so you can stop and come back tomorrow.</p>
+    </div>
+
+    <div style="margin: 26px 0 8px; background: #171917; border: 1px solid rgba(255,255,255,0.09); border-radius: 20px; padding: 22px;">
+      <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px;">
+        <div style="font-size: 17px; font-weight: 600; color: #d7dad2;">Your progress</div>
+        <div style="font-size: 15px; color: #8e918a; font-variant-numeric: tabular-nums;">{{ doneCount }} of {{ totalCount }} recorded</div>
+      </div>
+      <div style="margin-top: 14px; height: 12px; border-radius: 99px; background: rgba(255,255,255,0.08); overflow: hidden;">
+        <div style="height: 100%; border-radius: 99px; background: #c6ff4a; transition: width .45s cubic-bezier(.2,.8,.2,1); width: {{ overallPct }}%;"></div>
+      </div>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 14px; margin-top: 18px;">
+      <sc-for list="{{ sectionCards }}" as="s" hint-placeholder-count="4">
+        <button onClick="{{ s.open }}" style="width: 100%; text-align: left; display: block; background: #141614; border: 1px solid rgba(255,255,255,0.09); border-radius: 20px; padding: 20px; color: #f4f4f0; min-height: 96px; transition: border-color .2s, background .2s;" style-hover="background: #1b1e1a; border-color: rgba(198,255,74,0.4);">
+          <div style="display: flex; align-items: center; gap: 16px;">
+            <div style="flex: 1; min-width: 0;">
+              <div style="display: flex; align-items: center; gap: 10px;">
+                <div style="font-size: 22px; font-weight: 700; letter-spacing: -0.01em;">{{ s.name }}</div>
+                <div style="font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 5px 9px; border-radius: 7px; background: {{ s.chipBg }}; color: {{ s.chipFg }};">{{ s.status }}</div>
+              </div>
+              <div style="margin-top: 7px; font-size: 16px; color: #9a9d95; line-height: 1.4;">{{ s.blurb }}</div>
+              <div style="margin-top: 14px; height: 6px; border-radius: 99px; background: rgba(255,255,255,0.07); overflow: hidden;">
+                <div style="height: 100%; background: {{ s.barColor }}; transition: width .4s ease; width: {{ s.pct }}%;"></div>
+              </div>
+            </div>
+            <div style="font-size: 30px; color: #6e716b; line-height: 1;">›</div>
+          </div>
+        </button>
+      </sc-for>
+    </div>
+
+    <button onClick="{{ goResults }}" style="margin-top: 22px; width: 100%; min-height: 64px; border-radius: 16px; background: transparent; border: 1.5px solid rgba(255,255,255,0.18); color: #f4f4f0; font-size: 18px; font-weight: 600;" style-hover="border-color: #c6ff4a; color: #c6ff4a;">View my results</button>
+  </div>
+</sc-if>
+
+<sc-if value="{{ isTest }}" hint-placeholder-val="{{ false }}">
+  <div>
+    <div style="position: sticky; top: 0; background: #0d0e0d; padding: 20px 0 14px; z-index: 5;">
+      <div style="display: flex; align-items: center; gap: 14px;">
+        <button onClick="{{ exit }}" style="width: 48px; height: 48px; flex: none; border-radius: 14px; background: #1a1c19; border: 1px solid rgba(255,255,255,0.1); color: #e6e8e2; font-size: 22px; line-height: 1;" style-hover="border-color: rgba(255,255,255,0.3);">✕</button>
+        <div style="flex: 1; min-width: 0;">
+          <div style="font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; color: #8e918a; font-weight: 700;">{{ sectionName }} · {{ stepLabel }}</div>
+          <div style="margin-top: 9px; height: 8px; border-radius: 99px; background: rgba(255,255,255,0.08); overflow: hidden;">
+            <div style="height: 100%; background: #c6ff4a; transition: width .35s ease; width: {{ sectionPct }}%;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h2 style="margin: 12px 0 0; font-size: 34px; line-height: 1.05; letter-spacing: -0.025em; font-weight: 800; text-wrap: pretty;">{{ testName }}</h2>
+
+    <div style="margin-top: 18px; border-radius: 18px; overflow: hidden; border: 1px solid rgba(255,255,255,0.08); background: repeating-linear-gradient(135deg, #161815 0 12px, #1b1e1a 12px 24px); height: 168px; display: flex; align-items: center; justify-content: center;">
+      <div style="font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; letter-spacing: 0.08em; color: #7d8079; text-transform: uppercase; text-align: center; padding: 0 20px;">demo photo / video<br />{{ testName }}</div>
+    </div>
+
+    <div style="margin-top: 16px; background: #141614; border: 1px solid rgba(255,255,255,0.09); border-radius: 18px; padding: 18px 18px 4px;">
+      <button onClick="{{ toggleHow }}" style="width: 100%; background: none; border: none; padding: 0 0 14px; display: flex; align-items: center; justify-content: space-between; gap: 12px; color: #f4f4f0; text-align: left;">
+        <span style="font-size: 18px; font-weight: 700;">How to do it</span>
+        <span style="font-size: 15px; color: #c6ff4a; font-weight: 600;">{{ howLabel }}</span>
+      </button>
+      <sc-if value="{{ showHow }}" hint-placeholder-val="{{ true }}">
+        <div style="padding-bottom: 18px;">
+          <p style="margin: 0; font-size: 18px; line-height: 1.55; color: #cfd2ca; text-wrap: pretty;">{{ cue }}</p>
+          <div style="margin-top: 14px; display: flex; gap: 10px; align-items: flex-start; padding: 14px; border-radius: 13px; background: rgba(198,255,74,0.07); border: 1px solid rgba(198,255,74,0.22);">
+            <div style="font-size: 12px; font-weight: 800; letter-spacing: 0.1em; color: #c6ff4a; text-transform: uppercase; padding-top: 3px; flex: none;">Goal</div>
+            <div style="font-size: 17px; line-height: 1.45; color: #e3e6dd;">{{ goal }}</div>
+          </div>
+        </div>
+      </sc-if>
+    </div>
+
+    <sc-if value="{{ isPassfail }}" hint-placeholder-val="{{ false }}">
+      <div style="margin-top: 16px; display: flex; flex-direction: column; gap: 12px;">
+        <sc-for list="{{ rows }}" as="r" hint-placeholder-count="2">
+          <div style="background: #141614; border: 1px solid rgba(255,255,255,0.09); border-radius: 18px; padding: 16px;">
+            <div style="font-size: 15px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #9a9d95;">{{ r.label }}</div>
+            <div style="margin-top: 12px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+              <button onClick="{{ r.onPass }}" style="min-height: 68px; border-radius: 14px; font-size: 19px; font-weight: 700; border: 1.5px solid; transition: all .18s; background: {{ r.passBg }}; color: {{ r.passFg }}; border-color: {{ r.passBorder }};">Yes, I could</button>
+              <button onClick="{{ r.onFail }}" style="min-height: 68px; border-radius: 14px; font-size: 19px; font-weight: 700; border: 1.5px solid; transition: all .18s; background: {{ r.failBg }}; color: {{ r.failFg }}; border-color: {{ r.failBorder }};">Not yet</button>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isTimed }}" hint-placeholder-val="{{ false }}">
+      <div style="margin-top: 16px; display: flex; flex-direction: column; gap: 12px;">
+        <sc-for list="{{ rows }}" as="r" hint-placeholder-count="1">
+          <div style="background: #141614; border: 1px solid rgba(255,255,255,0.09); border-radius: 18px; padding: 18px;">
+            <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px;">
+              <div style="font-size: 15px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #9a9d95;">{{ r.label }}</div>
+              <div style="font-size: 15px; color: #8e918a;">{{ r.hint }}</div>
+            </div>
+            <div style="margin-top: 14px; display: flex; align-items: center; gap: 18px;">
+              <div style="font-size: 66px; font-weight: 800; letter-spacing: -0.04em; font-variant-numeric: tabular-nums; line-height: 1; color: {{ r.clockColor }};">{{ r.clock }}</div>
+              <div style="font-size: 17px; color: #8e918a; padding-bottom: 6px;">sec</div>
+            </div>
+            <div style="margin-top: 16px; display: flex; gap: 10px;">
+              <button onClick="{{ r.onToggle }}" style="flex: 1; min-height: 68px; border-radius: 14px; font-size: 19px; font-weight: 700; border: none; transition: all .18s; background: {{ r.btnBg }}; color: {{ r.btnFg }}; animation: {{ r.btnAnim }};">{{ r.btnLabel }}</button>
+              <button onClick="{{ r.onReset }}" style="width: 84px; min-height: 68px; border-radius: 14px; background: transparent; border: 1.5px solid rgba(255,255,255,0.16); color: #cfd2ca; font-size: 16px; font-weight: 600;" style-hover="border-color: rgba(255,255,255,0.35);">Reset</button>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isMeasure }}" hint-placeholder-val="{{ false }}">
+      <div style="margin-top: 16px; display: flex; flex-direction: column; gap: 12px;">
+        <sc-for list="{{ rows }}" as="r" hint-placeholder-count="2">
+          <div style="background: #141614; border: 1px solid rgba(255,255,255,0.09); border-radius: 18px; padding: 18px;">
+            <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px;">
+              <div style="font-size: 15px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #9a9d95;">{{ r.label }}</div>
+              <div style="font-size: 15px; color: #8e918a;">{{ r.hint }}</div>
+            </div>
+            <div style="margin-top: 12px; display: flex; align-items: center; gap: 12px;">
+              <button onClick="{{ r.dec }}" style="width: 72px; height: 72px; flex: none; border-radius: 50%; background: #21241f; border: 1.5px solid rgba(255,255,255,0.14); color: #f4f4f0; font-size: 34px; font-weight: 600; line-height: 1;" style-hover="border-color: #c6ff4a; color: #c6ff4a;">−</button>
+              <div style="flex: 1; text-align: center;">
+                <div style="font-size: 58px; font-weight: 800; letter-spacing: -0.04em; font-variant-numeric: tabular-nums; line-height: 1; color: {{ r.valueColor }};">{{ r.display }}</div>
+                <div style="margin-top: 4px; font-size: 15px; color: #8e918a; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600;">{{ r.unit }}</div>
+              </div>
+              <button onClick="{{ r.inc }}" style="width: 72px; height: 72px; flex: none; border-radius: 50%; background: #21241f; border: 1.5px solid rgba(255,255,255,0.14); color: #f4f4f0; font-size: 32px; font-weight: 600; line-height: 1;" style-hover="border-color: #c6ff4a; color: #c6ff4a;">+</button>
+            </div>
+            <div style="margin-top: 12px; display: flex; gap: 10px; justify-content: center;">
+              <button onClick="{{ r.dec5 }}" style="min-height: 52px; padding: 0 20px; border-radius: 12px; background: transparent; border: 1.5px solid rgba(255,255,255,0.14); color: #cfd2ca; font-size: 17px; font-weight: 600;" style-hover="border-color: rgba(255,255,255,0.35);">−5</button>
+              <button onClick="{{ r.inc5 }}" style="min-height: 52px; padding: 0 20px; border-radius: 12px; background: transparent; border: 1.5px solid rgba(255,255,255,0.14); color: #cfd2ca; font-size: 17px; font-weight: 600;" style-hover="border-color: rgba(255,255,255,0.35);">+5</button>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isCardio }}" hint-placeholder-val="{{ false }}">
+      <div style="margin-top: 16px; display: flex; flex-direction: column; gap: 12px;">
+        <div style="background: #141614; border: 1px solid rgba(255,255,255,0.09); border-radius: 18px; padding: 18px;">
+          <div style="font-size: 15px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #9a9d95;">Stopwatch</div>
+          <div style="margin-top: 12px; font-size: 64px; font-weight: 800; letter-spacing: -0.04em; font-variant-numeric: tabular-nums; line-height: 1; color: {{ walkColor }};">{{ walkClock }}</div>
+          <div style="margin-top: 14px; display: flex; gap: 10px;">
+            <button onClick="{{ toggleWalk }}" style="flex: 1; min-height: 68px; border-radius: 14px; font-size: 19px; font-weight: 700; border: none; background: {{ walkBtnBg }}; color: {{ walkBtnFg }}; animation: {{ walkAnim }};">{{ walkBtnLabel }}</button>
+            <button onClick="{{ resetWalk }}" style="width: 84px; min-height: 68px; border-radius: 14px; background: transparent; border: 1.5px solid rgba(255,255,255,0.16); color: #cfd2ca; font-size: 16px; font-weight: 600;">Reset</button>
+          </div>
+          <div style="margin-top: 12px; font-size: 16px; line-height: 1.45; color: #8e918a;">Stopping the watch fills in your time below. You can also adjust it by hand.</div>
+        </div>
+        <sc-for list="{{ rows }}" as="r" hint-placeholder-count="3">
+          <div style="background: #141614; border: 1px solid rgba(255,255,255,0.09); border-radius: 18px; padding: 16px; display: flex; align-items: center; gap: 12px;">
+            <div style="flex: 1; min-width: 0;">
+              <div style="font-size: 15px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #9a9d95;">{{ r.label }}</div>
+              <div style="margin-top: 4px; font-size: 40px; font-weight: 800; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; line-height: 1.1; color: {{ r.valueColor }};">{{ r.display }}</div>
+            </div>
+            <button onClick="{{ r.dec }}" style="width: 64px; height: 64px; flex: none; border-radius: 50%; background: #21241f; border: 1.5px solid rgba(255,255,255,0.14); color: #f4f4f0; font-size: 30px; line-height: 1;" style-hover="border-color: #c6ff4a; color: #c6ff4a;">−</button>
+            <button onClick="{{ r.inc }}" style="width: 64px; height: 64px; flex: none; border-radius: 50%; background: #21241f; border: 1.5px solid rgba(255,255,255,0.14); color: #f4f4f0; font-size: 28px; line-height: 1;" style-hover="border-color: #c6ff4a; color: #c6ff4a;">+</button>
+          </div>
+        </sc-for>
+      </div>
+    </sc-if>
+
+    <div style="position: sticky; bottom: 0; margin-top: 20px; padding: 16px 0 20px; background: linear-gradient(to top, #0d0e0d 55%, rgba(13,14,13,0));">
+      <div style="display: flex; gap: 12px;">
+        <button onClick="{{ back }}" style="width: 76px; min-height: 70px; border-radius: 16px; background: #1a1c19; border: 1px solid rgba(255,255,255,0.12); color: #e6e8e2; font-size: 26px; line-height: 1;" style-hover="border-color: rgba(255,255,255,0.32);">‹</button>
+        <button onClick="{{ next }}" style="flex: 1; min-height: 70px; border-radius: 16px; border: none; font-size: 20px; font-weight: 700; letter-spacing: -0.01em; transition: all .2s; background: {{ nextBg }}; color: {{ nextFg }};">{{ nextLabel }}</button>
+      </div>
+      <button onClick="{{ next }}" style="margin-top: 10px; width: 100%; background: none; border: none; color: #8e918a; font-size: 16px; font-weight: 600; min-height: 44px;" style-hover="color: #cfd2ca;">{{ skipLabel }}</button>
+    </div>
+  </div>
+</sc-if>
+
+<sc-if value="{{ isResults }}" hint-placeholder-val="{{ false }}">
+  <div style="animation: riseIn .3s ease both;">
+    <div style="display: flex; align-items: center; gap: 14px; padding: 20px 0 6px;">
+      <button onClick="{{ goHome }}" style="width: 48px; height: 48px; flex: none; border-radius: 14px; background: #1a1c19; border: 1px solid rgba(255,255,255,0.1); color: #e6e8e2; font-size: 22px; line-height: 1;" style-hover="border-color: rgba(255,255,255,0.3);">‹</button>
+      <div style="font-size: 13px; letter-spacing: 0.16em; text-transform: uppercase; color: #8e918a; font-weight: 700;">Your results</div>
+    </div>
+    <h1 style="margin: 10px 0 0; font-size: 36px; line-height: 1.05; letter-spacing: -0.03em; font-weight: 800;">{{ resultsHeadline }}</h1>
+    <p style="margin: 12px 0 0; font-size: 18px; line-height: 1.5; color: #a8aba4; text-wrap: pretty;">{{ resultsSub }}</p>
+
+    <div style="display: flex; flex-direction: column; gap: 16px; margin-top: 24px;">
+      <sc-for list="{{ resultSections }}" as="s" hint-placeholder-count="4">
+        <div style="background: #141614; border: 1px solid rgba(255,255,255,0.09); border-radius: 20px; padding: 20px;">
+          <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px;">
+            <div style="font-size: 22px; font-weight: 700; letter-spacing: -0.01em;">{{ s.name }}</div>
+            <button onClick="{{ s.open }}" style="background: none; border: none; color: #c6ff4a; font-size: 16px; font-weight: 700; min-height: 44px; padding: 0;" style-hover="color: #dcff8f;">Retake</button>
+          </div>
+          <div style="margin-top: 4px; font-size: 17px; color: #9a9d95; line-height: 1.45;">{{ s.summary }}</div>
+          <div style="margin-top: 16px; display: flex; flex-direction: column; gap: 1px; background: rgba(255,255,255,0.07); border-radius: 12px; overflow: hidden;">
+            <sc-for list="{{ s.rows }}" as="r" hint-placeholder-count="4">
+              <div style="background: #171a16; padding: 15px 16px; display: flex; align-items: center; gap: 12px;">
+                <div style="flex: 1; min-width: 0; font-size: 17px; color: #e3e6dd; line-height: 1.35;">{{ r.name }}</div>
+                <div style="font-size: 16px; font-weight: 700; font-variant-numeric: tabular-nums; padding: 7px 12px; border-radius: 9px; white-space: nowrap; background: {{ r.chipBg }}; color: {{ r.chipFg }};">{{ r.value }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+
+    <button onClick="{{ goHome }}" style="margin-top: 22px; width: 100%; min-height: 66px; border-radius: 16px; background: #c6ff4a; border: none; color: #10120f; font-size: 19px; font-weight: 700;" style-hover="background: #d6ff77;">Back to assessment</button>
+  </div>
+</sc-if>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:430,&quot;height&quot;:900}}">
+class Component extends DCLogic {
+  state = { screen: 'home', sectionId: null, idx: 0, results: {}, timer: null, showHow: true };
+
+  data = [
+    { id: 'mobility', name: 'Mobility', blurb: 'Ten movement checks · about 12 minutes', tests: [
+      { id: 'm_reach', name: 'Shoulder Reach Behind Back', kind: 'measure', unit: 'cm', sides: ['right', 'left'], start: 10, cue: 'Reach one hand behind your head and down. Reach the other hand up behind your back. Have someone measure the gap between your fingertips.', goal: 'Record the gap in centimetres. "Right" means your right hand was on top.' },
+      { id: 'm_toe', name: 'Toe Touch', kind: 'passfail', sides: ['both'], cue: 'Stand with your feet together. Place one hand on top of the other and reach forward toward the floor in front of your toes.', goal: 'You can touch your toes.' },
+      { id: 'm_rot', name: 'Standing Trunk Rotation', kind: 'passfail', sides: ['right', 'left'], cue: 'Stand with feet together and arms crossed on your chest. Turn as far as you can to one side, then the other.', goal: 'Your shoulders rotate about a quarter turn (90°).' },
+      { id: 'm_oh', name: 'Overhead Reach', kind: 'passfail', sides: ['right', 'left'], cue: 'Stand with feet together. Raise both arms straight overhead with your thumbs pointing up.', goal: 'Your arm reaches at least level with your ear.' },
+      { id: 'm_pull', name: 'Pull', kind: 'passfail', sides: ['right', 'left'], cue: 'Feet shoulder width apart, arms straight out at shoulder height, thumbs up. Bend your elbows and pull your arms back to your sides.', goal: 'Mid-forearm reaches the middle of your trunk.' },
+      { id: 'm_push', name: 'Push', kind: 'passfail', sides: ['both'], cue: 'Hands on a table or counter, slightly wider than your shoulders, feet shoulder width apart. Lower your chest to the surface, then press back up.', goal: 'Chest touches the surface and elbows straighten again.' },
+      { id: 'm_squat', name: 'Squat', kind: 'passfail', sides: ['both'], cue: 'Feet shoulder width apart, toes straight, arms crossed in front of you at shoulder height. Squat as deeply as you comfortably can.', goal: 'Thighs reach at least parallel to the floor.' },
+      { id: 'm_lunge', name: 'Forward Lunge', kind: 'passfail', sides: ['right', 'left'], cue: 'Step forward with one foot, roughly the distance from the floor to your hip bone, and lower the back knee toward the ground.', goal: 'Back knee touches the ground with your head in line with your front knee.' },
+      { id: 'm_step', name: 'Step Down', kind: 'passfail', sides: ['right', 'left'], cue: 'Stand tall with hands on hips. Raise one leg straight out in front and slowly squat on the standing leg, tapping the raised heel down.', goal: 'Heel taps the ground with the standing knee bent about 60°.' },
+      { id: 'm_lat', name: 'Lateral Lunge', kind: 'passfail', sides: ['right', 'left'], cue: 'Start with feet together. Step one foot out to the side and lunge as low as you comfortably can. Repeat to the other side.', goal: 'Stepping knee passes the toes, trunk stays in line with the shin.' }
+    ] },
+    { id: 'balance', name: 'Balance', blurb: 'Four stances plus single-leg hold · 6 minutes', tests: [
+      { id: 'b_together', name: 'Feet Together Stance', kind: 'timed', target: 10, sides: ['both'], cue: 'Stand with your feet side by side. Stay near a counter or have someone next to you. Start the timer and hold still.', goal: 'Hold 10 seconds without moving your feet or holding on.' },
+      { id: 'b_semi', name: 'Semi-Tandem Stance', kind: 'timed', target: 10, sides: ['both'], cue: 'Place the instep of one foot so it touches the big toe of the other foot.', goal: 'Hold 10 seconds without moving your feet or holding on.' },
+      { id: 'b_tandem', name: 'Heel-to-Toe Stance', kind: 'timed', target: 10, sides: ['both'], cue: 'Place one foot directly in front of the other, heel touching toe.', goal: 'Hold 10 seconds without moving your feet or holding on.' },
+      { id: 'b_single', name: 'One-Legged Stance', kind: 'timed', target: 10, sides: ['both'], cue: 'Stand on one foot with the other lifted clear of the floor.', goal: 'Hold 10 seconds without moving or holding on.' },
+      { id: 'b_sls', name: 'Single Leg Stance — Each Side', kind: 'timed', target: 30, sides: ['right', 'left'], cue: 'Stand on one leg and hold as long as you can, up to 30 seconds. Stop the timer the moment you touch down or grab support. Then switch legs.', goal: 'Record your best hold on each leg.' }
+    ] },
+    { id: 'grip', name: 'Grip Strength', blurb: 'Two positions, both hands · 5 minutes', tests: [
+      { id: 'g_side', name: 'Grip — Arm at Side', kind: 'measure', unit: 'lbs', sides: ['right', 'left'], start: 60, cue: 'Sit with your elbow bent to 90° and your arm at your side. Squeeze the dynamometer as hard as you can for 3 seconds. Do three squeezes per hand, resting between.', goal: 'Record your best of three squeezes for each hand.' },
+      { id: 'g_oh', name: 'Grip — Arm Overhead', kind: 'measure', unit: 'lbs', sides: ['right', 'left'], start: 55, cue: 'Raise your arm straight overhead, elbow straight, wrist neutral. Squeeze hard for 3 seconds. Lower your arm between squeezes. Three per hand.', goal: 'Record your best of three squeezes for each hand.' }
+    ] },
+    { id: 'cardio', name: 'Cardio — 1 Mile Walk', blurb: 'One timed walk · 20 minutes', tests: [
+      { id: 'c_walk', name: '1 Mile Walk Test', kind: 'cardio', cue: 'Find a flat mile, outdoors or on a treadmill. Warm up 3–5 minutes, then rest 2–3 minutes. Start the stopwatch and walk as quickly as you can — do not run. At one mile, stop the watch and take your heart rate right away.', goal: 'Record your finish time and the heart rate you measured at the finish.' }
+    ] }
+  ];
+
+  KEY = 'wellth.foundations.v1';
+  PROFILE = { age: 68, weightLb: 168, male: 0 };
+
+  componentDidMount() {
+    try {
+      const raw = localStorage.getItem(this.KEY);
+      if (raw) {
+        const s = JSON.parse(raw);
+        if (s && s.results) this.setState({ results: s.results, sectionId: s.sectionId || null, idx: s.idx || 0 });
+      }
+    } catch (e) {}
+  }
+  componentWillUnmount() { clearInterval(this._iv); }
+
+  persist(results, sectionId, idx) {
+    try { localStorage.setItem(this.KEY, JSON.stringify({ results, sectionId, idx })); } catch (e) {}
+  }
+  setVal(testId, key, value) {
+    this.setState(s => {
+      const results = Object.assign({}, s.results);
+      results[testId] = Object.assign({}, results[testId], { [key]: value });
+      this.persist(results, s.sectionId, s.idx);
+      return { results };
+    });
+  }
+
+  section() { return this.data.find(d => d.id === this.state.sectionId) || null; }
+  test() { const sec = this.section(); return sec ? sec.tests[Math.min(this.state.idx, sec.tests.length - 1)] : null; }
+
+  keysFor(t) { return t.kind === 'cardio' ? ['min', 'sec', 'hr'] : t.sides; }
+  isComplete(t, res) {
+    const r = res[t.id] || {};
+    return this.keysFor(t).every(k => r[k] !== undefined && r[k] !== null);
+  }
+  sectionCounts(sec) {
+    const res = this.state.results;
+    const done = sec.tests.filter(t => this.isComplete(t, res)).length;
+    return { done, total: sec.tests.length };
+  }
+
+  stopTimer() {
+    clearInterval(this._iv);
+    this._iv = null;
+    const tm = this.state.timer;
+    if (tm) this.setVal(tm.testId, tm.key, tm.sec);
+    this.setState({ timer: null });
+  }
+  startTimer(testId, key) {
+    clearInterval(this._iv);
+    this.setState({ timer: { testId, key, sec: 0 } });
+    this._iv = setInterval(() => {
+      this.setState(s => s.timer ? { timer: Object.assign({}, s.timer, { sec: s.timer.sec + 1 }) } : {});
+    }, 1000);
+  }
+  running(testId, key) {
+    const tm = this.state.timer;
+    return !!tm && tm.testId === testId && tm.key === key;
+  }
+
+  mmss(total) {
+    const m = Math.floor(total / 60), s = total % 60;
+    return m + ':' + String(s).padStart(2, '0');
+  }
+  vo2() {
+    const r = this.state.results.c_walk;
+    if (!r || r.min === undefined || r.hr === undefined) return null;
+    const time = r.min + (r.sec || 0) / 60;
+    const p = this.PROFILE;
+    const v = 132.853 - 0.0769 * p.weightLb - 0.3877 * p.age + 6.315 * p.male - 3.2649 * time - 0.1565 * r.hr;
+    return Math.max(0, v).toFixed(1);
+  }
+
+  goSection(id) { this.setState({ screen: 'test', sectionId: id, idx: 0, showHow: true, timer: null }); clearInterval(this._iv); }
+  advance(dir) {
+    const sec = this.section();
+    if (!sec) return;
+    if (this.state.timer) this.stopTimer();
+    const n = this.state.idx + dir;
+    if (n < 0) { this.setState({ screen: 'home' }); return; }
+    if (n >= sec.tests.length) { this.setState({ screen: 'results' }); return; }
+    this.setState({ idx: n, showHow: true });
+    this.persist(this.state.results, sec.id, n);
+  }
+
+  passRow(t, key, label) {
+    const v = (this.state.results[t.id] || {})[key];
+    const on = { passBg: '#c6ff4a', passFg: '#10120f', passBorder: '#c6ff4a' };
+    const off = { passBg: 'transparent', passFg: '#e3e6dd', passBorder: 'rgba(255,255,255,0.16)' };
+    const fOn = { failBg: 'rgba(240,163,60,0.16)', failFg: '#f0a33c', failBorder: '#f0a33c' };
+    const fOff = { failBg: 'transparent', failFg: '#e3e6dd', failBorder: 'rgba(255,255,255,0.16)' };
+    return Object.assign({
+      label,
+      onPass: () => this.setVal(t.id, key, 'pass'),
+      onFail: () => this.setVal(t.id, key, 'fail')
+    }, v === 'pass' ? on : off, v === 'fail' ? fOn : fOff);
+  }
+
+  renderVals() {
+    const st = this.state;
+    const sideLabel = k => k === 'right' ? 'Right side' : k === 'left' ? 'Left side' : 'Result';
+    const allTests = this.data.reduce((a, s) => a.concat(s.tests), []);
+    const doneCount = allTests.filter(t => this.isComplete(t, st.results)).length;
+
+    const vals = {
+      isHome: st.screen === 'home',
+      isTest: st.screen === 'test',
+      isResults: st.screen === 'results',
+      goHome: () => this.setState({ screen: 'home' }),
+      goResults: () => this.setState({ screen: 'results' }),
+      doneCount,
+      totalCount: allTests.length,
+      overallPct: Math.round(doneCount / allTests.length * 100),
+      sectionCards: this.data.map(sec => {
+        const c = this.sectionCounts(sec);
+        const full = c.done === c.total, none = c.done === 0;
+        return {
+          name: sec.name, blurb: sec.blurb, pct: Math.round(c.done / c.total * 100),
+          status: full ? 'Done' : none ? 'Start' : c.done + ' of ' + c.total,
+          chipBg: full ? 'rgba(198,255,74,0.16)' : none ? 'rgba(255,255,255,0.08)' : 'rgba(240,163,60,0.16)',
+          chipFg: full ? '#c6ff4a' : none ? '#9a9d95' : '#f0a33c',
+          barColor: full ? '#c6ff4a' : '#f0a33c',
+          open: () => this.goSection(sec.id)
+        };
+      })
+    };
+
+    const sec = this.section(), t = this.test();
+    if (sec && t) {
+      const res = st.results[t.id] || {};
+      const complete = this.isComplete(t, st.results);
+      Object.assign(vals, {
+        sectionName: sec.name,
+        stepLabel: 'Test ' + (st.idx + 1) + ' of ' + sec.tests.length,
+        sectionPct: Math.round((st.idx + (complete ? 1 : 0)) / sec.tests.length * 100),
+        testName: t.name,
+        cue: t.cue,
+        goal: t.goal,
+        showHow: st.showHow,
+        howLabel: st.showHow ? 'Hide' : 'Show',
+        toggleHow: () => this.setState(s => ({ showHow: !s.showHow })),
+        isPassfail: t.kind === 'passfail',
+        isTimed: t.kind === 'timed',
+        isMeasure: t.kind === 'measure',
+        isCardio: t.kind === 'cardio',
+        exit: () => { if (st.timer) this.stopTimer(); this.setState({ screen: 'home' }); },
+        back: () => this.advance(-1),
+        next: () => this.advance(1),
+        nextLabel: st.idx === sec.tests.length - 1 ? 'Finish section' : complete ? 'Saved — next test' : 'Next test',
+        nextBg: complete ? '#c6ff4a' : '#22251f',
+        nextFg: complete ? '#10120f' : '#8e918a',
+        skipLabel: complete ? 'Recorded. You can change it any time.' : 'Skip for now'
+      });
+
+      if (t.kind === 'passfail') {
+        vals.rows = t.sides.map(k => this.passRow(t, k, sideLabel(k)));
+      } else if (t.kind === 'timed') {
+        vals.rows = t.sides.map(k => {
+          const run = this.running(t.id, k);
+          const shown = run ? st.timer.sec : (res[k] !== undefined ? res[k] : 0);
+          const hit = !run && res[k] >= t.target;
+          return {
+            label: sideLabel(k),
+            hint: 'Goal ' + t.target + ' sec',
+            clock: String(shown),
+            clockColor: run ? '#c6ff4a' : hit ? '#c6ff4a' : shown > 0 ? '#f0a33c' : '#5d605a',
+            btnLabel: run ? 'Stop and save' : res[k] !== undefined ? 'Try again' : 'Start timer',
+            btnBg: run ? '#f0a33c' : '#c6ff4a',
+            btnFg: '#10120f',
+            btnAnim: run ? 'pulseRing 1.6s infinite' : 'none',
+            onToggle: () => run ? this.stopTimer() : this.startTimer(t.id, k),
+            onReset: () => { if (run) { clearInterval(this._iv); this.setState({ timer: null }); } this.setVal(t.id, k, undefined); }
+          };
+        });
+      } else if (t.kind === 'measure') {
+        vals.rows = t.sides.map(k => {
+          const set = res[k] !== undefined;
+          const v = set ? res[k] : t.start;
+          const clamp = n => Math.max(0, Math.min(400, n));
+          return {
+            label: sideLabel(k),
+            hint: set ? 'Recorded' : 'Not recorded yet',
+            display: String(v),
+            unit: t.unit,
+            valueColor: set ? '#f4f4f0' : '#5d605a',
+            dec: () => this.setVal(t.id, k, clamp(v - 1)),
+            inc: () => this.setVal(t.id, k, clamp(v + 1)),
+            dec5: () => this.setVal(t.id, k, clamp(v - 5)),
+            inc5: () => this.setVal(t.id, k, clamp(v + 5))
+          };
+        });
+      } else if (t.kind === 'cardio') {
+        const run = this.running(t.id, 'watch');
+        const shown = run ? st.timer.sec : ((res.min || 0) * 60 + (res.sec || 0));
+        vals.walkClock = this.mmss(shown);
+        vals.walkColor = run ? '#c6ff4a' : shown > 0 ? '#f4f4f0' : '#5d605a';
+        vals.walkBtnLabel = run ? 'Stop at 1 mile' : 'Start walking';
+        vals.walkBtnBg = run ? '#f0a33c' : '#c6ff4a';
+        vals.walkBtnFg = '#10120f';
+        vals.walkAnim = run ? 'pulseRing 1.6s infinite' : 'none';
+        vals.toggleWalk = () => {
+          if (run) {
+            const total = st.timer.sec;
+            clearInterval(this._iv);
+            this.setState({ timer: null });
+            this.setVal(t.id, 'min', Math.floor(total / 60));
+            this.setVal(t.id, 'sec', total % 60);
+          } else this.startTimer(t.id, 'watch');
+        };
+        vals.resetWalk = () => {
+          if (run) { clearInterval(this._iv); this.setState({ timer: null }); }
+          this.setVal(t.id, 'min', undefined); this.setVal(t.id, 'sec', undefined);
+        };
+        const f = (key, label, max, step) => {
+          const set = res[key] !== undefined;
+          const v = set ? res[key] : 0;
+          return {
+            label, display: String(v), valueColor: set ? '#f4f4f0' : '#5d605a',
+            dec: () => this.setVal(t.id, key, Math.max(0, v - step)),
+            inc: () => this.setVal(t.id, key, Math.min(max, v + step))
+          };
+        };
+        vals.rows = [f('min', 'Minutes', 90, 1), f('sec', 'Seconds', 59, 5), f('hr', 'Heart rate at finish (bpm)', 220, 1)];
+      }
+    }
+
+    if (st.screen === 'results') {
+      const chip = tone => tone === 'good'
+        ? { chipBg: 'rgba(198,255,74,0.16)', chipFg: '#c6ff4a' }
+        : tone === 'work'
+        ? { chipBg: 'rgba(240,163,60,0.16)', chipFg: '#f0a33c' }
+        : { chipBg: 'rgba(255,255,255,0.07)', chipFg: '#8e918a' };
+      vals.resultsHeadline = doneCount === 0 ? 'Nothing recorded yet' : doneCount + ' of ' + allTests.length + ' tests recorded';
+      vals.resultsSub = doneCount === 0
+        ? 'Pick a section on the previous screen and your results will build up here.'
+        : 'This is your reference sheet. Tap Retake on any section to record it again — old values are simply replaced.';
+      vals.resultSections = this.data.map(sec => {
+        const rows = [];
+        sec.tests.forEach(t => {
+          this.keysFor(t).forEach(k => {
+            const r = st.results[t.id] || {};
+            const v = r[k];
+            const label = t.kind === 'cardio'
+              ? (k === 'min' ? 'Finish time (min)' : k === 'sec' ? 'Finish time (sec)' : 'Heart rate at finish')
+              : t.name + (k === 'both' ? '' : k === 'right' ? ' — Right' : ' — Left');
+            if (v === undefined || v === null) { rows.push(Object.assign({ name: label, value: '—' }, chip('none'))); return; }
+            if (t.kind === 'passfail') rows.push(Object.assign({ name: label, value: v === 'pass' ? 'Yes' : 'Not yet' }, chip(v === 'pass' ? 'good' : 'work')));
+            else if (t.kind === 'timed') rows.push(Object.assign({ name: label, value: v + ' sec' }, chip(v >= t.target ? 'good' : 'work')));
+            else if (t.kind === 'measure') rows.push(Object.assign({ name: label, value: v + ' ' + t.unit }, chip('good')));
+            else rows.push(Object.assign({ name: label, value: String(v) }, chip('good')));
+          });
+        });
+        let summary;
+        const c = this.sectionCounts(sec);
+        if (sec.id === 'mobility') {
+          const flat = sec.tests.filter(x => x.kind === 'passfail').reduce((a, x) => a.concat(x.sides.map(k => (st.results[x.id] || {})[k])), []);
+          const passed = flat.filter(v => v === 'pass').length;
+          summary = passed + ' of ' + flat.length + ' movement checks passed';
+        } else if (sec.id === 'balance') {
+          const stances = ['b_together', 'b_semi', 'b_tandem', 'b_single'];
+          const held = stances.filter(id => ((st.results[id] || {}).both || 0) >= 10).length;
+          summary = held + ' of 4 stances held a full 10 seconds';
+        } else if (sec.id === 'cardio') {
+          const v = this.vo2();
+          summary = v ? 'Estimated VO₂ max ' + v + ' ml/kg/min (Rockport)' : 'Record your time and heart rate to estimate VO₂ max';
+        } else {
+          summary = c.done + ' of ' + c.total + ' tests recorded';
+        }
+        return { name: sec.name, summary, rows, open: () => this.goSection(sec.id) };
+      });
+    }
+
+    return vals;
+  }
+}
+</script>
+</body>
+</html>

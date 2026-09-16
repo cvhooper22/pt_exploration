@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Fitness App — Mobile Screens Comparison</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, Segoe UI, sans-serif;
+    background: #E4E4E4;
+    color: #111;
+    padding: 32px 16px 80px;
+  }
+  header { text-align: center; margin-bottom: 32px; }
+  header h1 { font-size: 22px; margin-bottom: 4px; }
+  header p { font-size: 14px; color: #555; }
+
+  .row { text-align: center; font-size: 13px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: #444; margin: 40px 0 16px; }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+    max-width: 1200px;
+    margin: 0 auto;
+    justify-items: center;
+  }
+  @media (max-width: 980px) {
+    .grid { grid-template-columns: 1fr; }
+  }
+
+  .phone-label { text-align: center; font-size: 12px; color: #666; margin-bottom: 8px; font-weight: 600; }
+
+  .phone {
+    width: 300px;
+    height: 620px;
+    border-radius: 32px;
+    border: 6px solid #111;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+    background: #000;
+  }
+  .notch {
+    position: absolute;
+    top: 0; left: 50%; transform: translateX(-50%);
+    width: 110px; height: 20px;
+    background: #111;
+    border-radius: 0 0 12px 12px;
+    z-index: 10;
+  }
+  .screen {
+    width: 100%; height: 100%;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+  }
+  .screen::-webkit-scrollbar { display: none; }
+
+  /* ================= MOMENTUM (modern/athletic) ================= */
+  .momentum { background: #0B0D10; color: #F5F6F7; font-family: Inter, sans-serif; }
+  .momentum .status-bar { height: 28px; }
+
+  .momentum.login { justify-content: center; padding: 32px 24px; }
+  .momentum .logo-mark { width: 48px; height: 48px; border-radius: 12px; background: #D4FF3F; margin: 0 auto 20px; }
+  .momentum .login-title { font-weight: 800; text-transform: uppercase; font-size: 22px; text-align: center; letter-spacing: 0.5px; }
+  .momentum .login-sub { color: #8B9096; font-size: 13px; text-align: center; margin: 6px 0 28px; }
+  .momentum .field { background: #16191D; border: 1px solid #2A2E33; border-radius: 8px; padding: 14px; font-size: 13px; color: #8B9096; margin-bottom: 12px; }
+  .momentum .btn-primary { background: #D4FF3F; color: #0B0D10; text-align: center; padding: 14px; border-radius: 999px; font-weight: 800; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 8px; }
+  .momentum .link { text-align: center; font-size: 12px; color: #8B9096; margin-top: 20px; }
+  .momentum .link span { color: #D4FF3F; font-weight: 600; }
+
+  .momentum .home-content { padding: 20px 18px 90px; flex: 1; }
+  .momentum .greeting { font-size: 20px; font-weight: 800; }
+  .momentum .greeting-sub { color: #8B9096; font-size: 12px; margin-top: 2px; }
+  .momentum .streak { display: flex; align-items: center; gap: 6px; background: #16191D; border: 1px solid #2A2E33; border-radius: 999px; padding: 6px 12px; font-size: 11px; font-weight: 700; margin-top: 14px; width: fit-content; }
+  .momentum .streak .dot { width: 6px; height: 6px; border-radius: 50%; background: #D4FF3F; }
+  .momentum .section-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: #8B9096; font-weight: 700; margin: 22px 0 10px; }
+  .momentum .workout-card { background: linear-gradient(135deg, #16191D, #1F2328); border-radius: 14px; padding: 16px; margin-bottom: 10px; border: 1px solid #2A2E33; }
+  .momentum .workout-title { font-weight: 800; font-size: 15px; }
+  .momentum .workout-meta { color: #8B9096; font-size: 11px; margin-top: 3px; }
+  .momentum .workout-ring { width: 40px; height: 40px; border-radius: 50%; background: conic-gradient(#D4FF3F 0% 40%, #2A2E33 40% 100%); float: right; margin-top: -36px; }
+  .momentum .assess-row { display: flex; justify-content: space-between; align-items: center; background: #16191D; border: 1px solid #2A2E33; border-radius: 10px; padding: 12px 14px; margin-bottom: 8px; }
+  .momentum .assess-name { font-size: 13px; font-weight: 600; }
+  .momentum .assess-due { font-size: 10px; color: #8B9096; margin-top: 2px; }
+  .momentum .badge { font-size: 10px; font-weight: 700; padding: 4px 8px; border-radius: 999px; background: rgba(212,255,63,0.15); color: #D4FF3F; }
+  .momentum .badge.warn { background: rgba(255,90,78,0.15); color: #FF5A4E; }
+  .momentum .navbar { display: flex; justify-content: space-around; align-items: center; height: 68px; background: #16191D; border-top: 1px solid #2A2E33; }
+  .momentum .nav-item { font-size: 9px; color: #8B9096; text-align: center; font-weight: 700; text-transform: uppercase; }
+  .momentum .nav-item.active { color: #D4FF3F; }
+  .momentum .nav-dot { width: 20px; height: 20px; border-radius: 6px; background: #2A2E33; margin: 0 auto 4px; }
+  .momentum .nav-item.active .nav-dot { background: #D4FF3F; }
+
+  /* ================= MOMENTUM LIGHT (modern/athletic, light mode) ================= */
+  .momentum-light { background: #FAFAF8; color: #14171A; font-family: Inter, sans-serif; }
+  .momentum-light .status-bar { height: 28px; background: #FAFAF8; }
+
+  .momentum-light.login { justify-content: center; padding: 32px 24px; }
+  .momentum-light .logo-mark { width: 48px; height: 48px; border-radius: 12px; background: #6FA300; margin: 0 auto 20px; }
+  .momentum-light .login-title { font-weight: 800; text-transform: uppercase; font-size: 22px; text-align: center; letter-spacing: 0.5px; }
+  .momentum-light .login-sub { color: #6B7178; font-size: 13px; text-align: center; margin: 6px 0 28px; }
+  .momentum-light .field { background: #F0F1EE; border: 1px solid #E1E3DE; border-radius: 8px; padding: 14px; font-size: 13px; color: #6B7178; margin-bottom: 12px; }
+  .momentum-light .btn-primary { background: #14171A; color: #C6FF3D; text-align: center; padding: 14px; border-radius: 999px; font-weight: 800; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 8px; }
+  .momentum-light .link { text-align: center; font-size: 12px; color: #6B7178; margin-top: 20px; }
+  .momentum-light .link span { color: #6FA300; font-weight: 700; }
+
+  .momentum-light .home-content { padding: 20px 18px 90px; flex: 1; }
+  .momentum-light .greeting { font-size: 20px; font-weight: 800; }
+  .momentum-light .greeting-sub { color: #6B7178; font-size: 12px; margin-top: 2px; }
+  .momentum-light .streak { display: flex; align-items: center; gap: 6px; background: #EFFCC7; border: 1px solid #D8F491; border-radius: 999px; padding: 6px 12px; font-size: 11px; font-weight: 700; margin-top: 14px; width: fit-content; color: #4C7300; }
+  .momentum-light .streak .dot { width: 6px; height: 6px; border-radius: 50%; background: #6FA300; }
+  .momentum-light .section-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: #6B7178; font-weight: 700; margin: 22px 0 10px; }
+  .momentum-light .workout-card { background: #14171A; border-radius: 14px; padding: 16px; margin-bottom: 10px; }
+  .momentum-light .workout-title { font-weight: 800; font-size: 15px; color: #F5F6F7; }
+  .momentum-light .workout-meta { color: #9BA0A6; font-size: 11px; margin-top: 3px; }
+  .momentum-light .workout-ring { width: 40px; height: 40px; border-radius: 50%; background: conic-gradient(#C6FF3D 0% 40%, #33383E 40% 100%); float: right; margin-top: -36px; }
+  .momentum-light .assess-row { display: flex; justify-content: space-between; align-items: center; background: #F0F1EE; border: 1px solid #E1E3DE; border-radius: 10px; padding: 12px 14px; margin-bottom: 8px; }
+  .momentum-light .assess-name { font-size: 13px; font-weight: 600; }
+  .momentum-light .assess-due { font-size: 10px; color: #6B7178; margin-top: 2px; }
+  .momentum-light .badge { font-size: 10px; font-weight: 700; padding: 4px 8px; border-radius: 999px; background: #E7FBA8; color: #4C7300; }
+  .momentum-light .badge.warn { background: #FFE1DD; color: #C23B2E; }
+  .momentum-light .navbar { display: flex; justify-content: space-around; align-items: center; height: 68px; background: #F0F1EE; border-top: 1px solid #E1E3DE; }
+  .momentum-light .nav-item { font-size: 9px; color: #6B7178; text-align: center; font-weight: 700; text-transform: uppercase; }
+  .momentum-light .nav-item.active { color: #4C7300; }
+  .momentum-light .nav-dot { width: 20px; height: 20px; border-radius: 6px; background: #E1E3DE; margin: 0 auto 4px; }
+  .momentum-light .nav-item.active .nav-dot { background: #C6FF3D; }
+
+  /* ================= LEDGER (enterprise/clinical) ================= */
+  .ledger { background: #FFFFFF; color: #1A1D21; font-family: 'IBM Plex Sans', sans-serif; }
+  .ledger .status-bar { height: 28px; background: #F7F8FA; }
+
+  .ledger.login { justify-content: center; padding: 32px 24px; }
+  .ledger .logo-mark { width: 44px; height: 44px; border-radius: 6px; background: #1E5F8C; margin: 0 auto 18px; }
+  .ledger .login-title { font-weight: 600; font-size: 19px; text-align: center; }
+  .ledger .login-sub { color: #5B6470; font-size: 12px; text-align: center; margin: 4px 0 26px; }
+  .ledger .field-label { font-size: 11px; font-weight: 600; color: #5B6470; margin-bottom: 4px; }
+  .ledger .field { background: #F7F8FA; border: 1px solid #D8DCE1; border-radius: 3px; padding: 11px; font-size: 13px; color: #5B6470; margin-bottom: 12px; }
+  .ledger .btn-primary { background: #1E5F8C; color: #fff; text-align: center; padding: 12px; border-radius: 3px; font-weight: 600; font-size: 13px; margin-top: 4px; }
+  .ledger .link { text-align: center; font-size: 12px; color: #5B6470; margin-top: 18px; }
+  .ledger .link span { color: #1E5F8C; font-weight: 600; }
+  .ledger .org-badge { text-align: center; font-size: 10px; color: #8A929C; margin-top: 26px; border-top: 1px solid #D8DCE1; padding-top: 14px; }
+
+  .ledger .home-content { padding: 18px 16px 90px; flex: 1; background: #F7F8FA; }
+  .ledger .greeting { font-size: 17px; font-weight: 600; }
+  .ledger .greeting-sub { color: #5B6470; font-size: 11px; margin-top: 2px; }
+  .ledger .section-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.3px; color: #5B6470; font-weight: 600; margin: 18px 0 8px; }
+  .ledger .card-white { background: #fff; border: 1px solid #D8DCE1; border-radius: 6px; padding: 12px 14px; margin-bottom: 8px; }
+  .ledger .workout-title { font-weight: 600; font-size: 13px; }
+  .ledger .workout-meta { color: #5B6470; font-size: 11px; margin-top: 2px; }
+  .ledger .row-flex { display: flex; justify-content: space-between; align-items: center; }
+  .ledger .pct { font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; color: #1E5F8C; }
+  .ledger .assess-name { font-size: 12.5px; font-weight: 500; }
+  .ledger .assess-due { font-size: 10px; color: #5B6470; margin-top: 2px; }
+  .ledger .dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-right: 5px; }
+  .ledger .dot.amber { background: #B5791F; }
+  .ledger .dot.red { background: #B3403A; }
+  .ledger .dot.green { background: #1F8A5F; }
+  .ledger .status-text { font-size: 10px; font-weight: 600; }
+  .ledger .navbar { display: flex; justify-content: space-around; align-items: center; height: 64px; background: #fff; border-top: 1px solid #D8DCE1; }
+  .ledger .nav-item { font-size: 9px; color: #5B6470; text-align: center; font-weight: 500; }
+  .ledger .nav-item.active { color: #1E5F8C; font-weight: 600; }
+  .ledger .nav-dot { width: 16px; height: 16px; border-radius: 3px; background: #D8DCE1; margin: 0 auto 4px; }
+  .ledger .nav-item.active .nav-dot { background: #1E5F8C; }
+
+  /* ================= STEADY (accessible/older users) ================= */
+  .steady { background: #FFFFFF; color: #1C1C1C; font-family: 'Atkinson Hyperlegible', Georgia, serif; }
+  .steady .status-bar { height: 28px; background: #F4F7F5; }
+
+  .steady.login { justify-content: center; padding: 30px 22px; }
+  .steady .logo-mark { width: 52px; height: 52px; border-radius: 12px; background: #2C6E49; margin: 0 auto 18px; }
+  .steady .login-title { font-family: 'Source Serif 4', Georgia, serif; font-weight: 600; font-size: 21px; text-align: center; }
+  .steady .login-sub { color: #4A4A4A; font-size: 14px; text-align: center; margin: 6px 0 24px; }
+  .steady .field-label { font-size: 14px; font-weight: 700; margin-bottom: 5px; }
+  .steady .field { background: #fff; border: 2px solid #C7CDC9; border-radius: 8px; padding: 13px; font-size: 15px; color: #4A4A4A; margin-bottom: 14px; min-height: 48px; }
+  .steady .btn-primary { background: #2C6E49; color: #fff; text-align: center; padding: 14px; border-radius: 8px; font-weight: 700; font-size: 16px; margin-top: 6px; min-height: 48px; display: flex; align-items: center; justify-content: center; }
+  .steady .link { text-align: center; font-size: 14px; color: #2C6E49; font-weight: 700; margin-top: 22px; text-decoration: underline; }
+  .steady .help-note { text-align: center; font-size: 12px; color: #4A4A4A; margin-top: 30px; }
+
+  .steady .home-content { padding: 20px 18px 92px; flex: 1; }
+  .steady .greeting { font-family: 'Source Serif 4', Georgia, serif; font-size: 20px; font-weight: 600; }
+  .steady .greeting-sub { color: #4A4A4A; font-size: 14px; margin-top: 3px; }
+  .steady .banner { background: #F4F7F5; border: 2px solid #2C6E49; border-radius: 10px; padding: 14px; margin-top: 16px; }
+  .steady .banner-label { font-size: 11px; font-weight: 700; text-transform: uppercase; color: #2C6E49; letter-spacing: 0.3px; }
+  .steady .banner-title { font-family: 'Source Serif 4', Georgia, serif; font-weight: 600; font-size: 16px; margin-top: 3px; }
+  .steady .banner-sub { font-size: 13px; color: #4A4A4A; margin-top: 3px; }
+  .steady .section-label { font-size: 15px; font-weight: 700; margin: 22px 0 10px; }
+  .steady .card-white { background: #F4F7F5; border-radius: 8px; padding: 14px; margin-bottom: 10px; min-height: 48px; }
+  .steady .workout-title { font-weight: 700; font-size: 15px; }
+  .steady .workout-meta { color: #4A4A4A; font-size: 13px; margin-top: 3px; }
+  .steady .assess-name { font-size: 15px; font-weight: 700; }
+  .steady .assess-due { font-size: 13px; color: #4A4A4A; margin-top: 3px; }
+  .steady .badge { font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 999px; background: #C9772A; color: #fff; }
+  .steady .badge.done { background: #2C6E49; }
+  .steady .navbar { display: flex; justify-content: space-around; align-items: center; height: 72px; background: #F4F7F5; border-top: 2px solid #C7CDC9; }
+  .steady .nav-item { font-size: 11px; color: #4A4A4A; text-align: center; font-weight: 700; }
+  .steady .nav-item.active { color: #2C6E49; }
+  .steady .nav-dot { width: 22px; height: 22px; border-radius: 6px; background: #C7CDC9; margin: 0 auto 4px; }
+  .steady .nav-item.active .nav-dot { background: #2C6E49; }
+
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Fitness Tracking Platform — Mobile Screens</h1>
+  <p>Login &amp; Home (end-user view) across all three design directions</p>
+</header>
+
+<div class="row">Login Screen</div>
+<div class="grid">
+
+  <!-- MOMENTUM LOGIN -->
+  <div>
+    <div class="phone-label">01 · Momentum</div>
+    <div class="phone">
+      <div class="notch"></div>
+      <div class="screen momentum login">
+        <div class="logo-mark"></div>
+        <div class="login-title">Welcome Back</div>
+        <div class="login-sub">Log in to track your progress</div>
+        <div class="field">Email</div>
+        <div class="field">Password</div>
+        <div class="btn-primary">Log In</div>
+        <div class="link">New here? <span>Create Account</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LEDGER LOGIN -->
+  <div>
+    <div class="phone-label">02 · Ledger</div>
+    <div class="phone">
+      <div class="notch"></div>
+      <div class="screen ledger login">
+        <div class="logo-mark"></div>
+        <div class="login-title">Sign In</div>
+        <div class="login-sub">Access your care team's assessments</div>
+        <div class="field-label">Email Address</div>
+        <div class="field">name@example.com</div>
+        <div class="field-label">Password</div>
+        <div class="field">••••••••</div>
+        <div class="btn-primary">Sign In</div>
+        <div class="link">Forgot password? <span>Reset it</span></div>
+        <div class="org-badge">Connected to: Riverside Physical Therapy</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEADY LOGIN -->
+  <div>
+    <div class="phone-label">03 · Steady</div>
+    <div class="phone">
+      <div class="notch"></div>
+      <div class="screen steady login">
+        <div class="logo-mark"></div>
+        <div class="login-title">Welcome Back</div>
+        <div class="login-sub">Please sign in to continue</div>
+        <div class="field-label">Email</div>
+        <div class="field">name@example.com</div>
+        <div class="field-label">Password</div>
+        <div class="field">••••••••</div>
+        <div class="btn-primary">Sign In</div>
+        <div class="link">Forgot your password?</div>
+        <div class="help-note">Need help? Call your clinic at (555) 010-0199</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="row">Home Screen</div>
+<div class="grid">
+
+  <!-- MOMENTUM HOME -->
+  <div>
+    <div class="phone-label">01 · Momentum</div>
+    <div class="phone">
+      <div class="notch"></div>
+      <div class="screen momentum">
+        <div class="status-bar"></div>
+        <div class="home-content">
+          <div class="greeting">Hey, Jordan</div>
+          <div class="greeting-sub">Let's keep the momentum going</div>
+          <div class="streak"><span class="dot"></span>7 DAY STREAK</div>
+
+          <div class="section-label">Today's Workout</div>
+          <div class="workout-card">
+            <div class="workout-ring"></div>
+            <div class="workout-title">Lower Body Mobility</div>
+            <div class="workout-meta">18 min · 6 exercises</div>
+          </div>
+
+          <div class="section-label">Assigned Assessments</div>
+          <div class="assess-row">
+            <div>
+              <div class="assess-name">Balance Test</div>
+              <div class="assess-due">Due in 2 days</div>
+            </div>
+            <div class="badge warn">Start</div>
+          </div>
+          <div class="assess-row">
+            <div>
+              <div class="assess-name">Gait Analysis</div>
+              <div class="assess-due">Completed Aug 12</div>
+            </div>
+            <div class="badge">Done</div>
+          </div>
+
+          <div class="section-label">Progress Snapshot</div>
+          <div class="assess-row">
+            <div>
+              <div class="assess-name">Range of Motion</div>
+              <div class="assess-due">+12% since last month</div>
+            </div>
+            <div class="badge">↑</div>
+          </div>
+        </div>
+        <div class="navbar">
+          <div class="nav-item active"><div class="nav-dot"></div>Home</div>
+          <div class="nav-item"><div class="nav-dot"></div>Workouts</div>
+          <div class="nav-item"><div class="nav-dot"></div>Assess</div>
+          <div class="nav-item"><div class="nav-dot"></div>Profile</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LEDGER HOME -->
+  <div>
+    <div class="phone-label">02 · Ledger</div>
+    <div class="phone">
+      <div class="notch"></div>
+      <div class="screen ledger">
+        <div class="status-bar"></div>
+        <div class="home-content">
+          <div class="greeting">Good morning, Jordan Alvarez</div>
+          <div class="greeting-sub">Riverside Physical Therapy</div>
+
+          <div class="section-label">Today's Workout</div>
+          <div class="card-white">
+            <div class="row-flex">
+              <div>
+                <div class="workout-title">Lower Body Mobility</div>
+                <div class="workout-meta">18 min · 6 exercises · assigned by Dr. Lin</div>
+              </div>
+              <div class="pct">40%</div>
+            </div>
+          </div>
+
+          <div class="section-label">Assigned Assessments</div>
+          <div class="card-white">
+            <div class="row-flex">
+              <div>
+                <div class="assess-name">Balance Test</div>
+                <div class="assess-due">Due Aug 19</div>
+              </div>
+              <div class="status-text"><span class="dot amber"></span>Due Soon</div>
+            </div>
+          </div>
+          <div class="card-white">
+            <div class="row-flex">
+              <div>
+                <div class="assess-name">Gait Analysis</div>
+                <div class="assess-due">Completed Aug 12</div>
+              </div>
+              <div class="status-text"><span class="dot green"></span>Complete</div>
+            </div>
+          </div>
+
+          <div class="section-label">Care Team Notes</div>
+          <div class="card-white">
+            <div class="assess-name">Dr. Lin</div>
+            <div class="assess-due">"Increase hold time on balance drills to 30s."</div>
+          </div>
+        </div>
+        <div class="navbar">
+          <div class="nav-item active"><div class="nav-dot"></div>Home</div>
+          <div class="nav-item"><div class="nav-dot"></div>Workouts</div>
+          <div class="nav-item"><div class="nav-dot"></div>Assessments</div>
+          <div class="nav-item"><div class="nav-dot"></div>Account</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEADY HOME -->
+  <div>
+    <div class="phone-label">03 · Steady</div>
+    <div class="phone">
+      <div class="notch"></div>
+      <div class="screen steady">
+        <div class="status-bar"></div>
+        <div class="home-content">
+          <div class="greeting">Hello, Jordan</div>
+          <div class="greeting-sub">Here's what's next for you today</div>
+
+          <div class="banner">
+            <div class="banner-label">Next Step</div>
+            <div class="banner-title">Take Your Balance Assessment</div>
+            <div class="banner-sub">It takes about 5 minutes. Due Wednesday.</div>
+          </div>
+
+          <div class="section-label">Today's Workout</div>
+          <div class="card-white">
+            <div class="workout-title">Lower Body Mobility</div>
+            <div class="workout-meta">18 minutes · 6 easy exercises</div>
+          </div>
+
+          <div class="section-label">Your Assessments</div>
+          <div class="card-white row-flex" style="display:flex;justify-content:space-between;align-items:center;">
+            <div>
+              <div class="assess-name">Balance Test</div>
+              <div class="assess-due">Due Wednesday</div>
+            </div>
+            <div class="badge">Start</div>
+          </div>
+          <div class="card-white row-flex" style="display:flex;justify-content:space-between;align-items:center;">
+            <div>
+              <div class="assess-name">Gait Analysis</div>
+              <div class="assess-due">Completed August 12</div>
+            </div>
+            <div class="badge done">Done</div>
+          </div>
+        </div>
+        <div class="navbar">
+          <div class="nav-item active"><div class="nav-dot"></div>Home</div>
+          <div class="nav-item"><div class="nav-dot"></div>Workouts</div>
+          <div class="nav-item"><div class="nav-dot"></div>Tests</div>
+          <div class="nav-item"><div class="nav-dot"></div>Help</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="row">Momentum — Light Mode Variant</div>
+<div class="grid" style="grid-template-columns: repeat(2, 1fr); max-width: 700px;">
+
+  <!-- MOMENTUM LIGHT LOGIN -->
+  <div>
+    <div class="phone-label">01 · Momentum (Light)</div>
+    <div class="phone">
+      <div class="notch"></div>
+      <div class="screen momentum-light login">
+        <div class="logo-mark"></div>
+        <div class="login-title">Welcome Back</div>
+        <div class="login-sub">Log in to track your progress</div>
+        <div class="field">Email</div>
+        <div class="field">Password</div>
+        <div class="btn-primary">Log In</div>
+        <div class="link">New here? <span>Create Account</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MOMENTUM LIGHT HOME -->
+  <div>
+    <div class="phone-label">01 · Momentum (Light)</div>
+    <div class="phone">
+      <div class="notch"></div>
+      <div class="screen momentum-light">
+        <div class="status-bar"></div>
+        <div class="home-content">
+          <div class="greeting">Hey, Jordan</div>
+          <div class="greeting-sub">Let's keep the momentum going</div>
+          <div class="streak"><span class="dot"></span>7 DAY STREAK</div>
+
+          <div class="section-label">Today's Workout</div>
+          <div class="workout-card">
+            <div class="workout-ring"></div>
+            <div class="workout-title">Lower Body Mobility</div>
+            <div class="workout-meta">18 min · 6 exercises</div>
+          </div>
+
+          <div class="section-label">Assigned Assessments</div>
+          <div class="assess-row">
+            <div>
+              <div class="assess-name">Balance Test</div>
+              <div class="assess-due">Due in 2 days</div>
+            </div>
+            <div class="badge warn">Start</div>
+          </div>
+          <div class="assess-row">
+            <div>
+              <div class="assess-name">Gait Analysis</div>
+              <div class="assess-due">Completed Aug 12</div>
+            </div>
+            <div class="badge">Done</div>
+          </div>
+
+          <div class="section-label">Progress Snapshot</div>
+          <div class="assess-row">
+            <div>
+              <div class="assess-name">Range of Motion</div>
+              <div class="assess-due">+12% since last month</div>
+            </div>
+            <div class="badge">↑</div>
+          </div>
+        </div>
+        <div class="navbar">
+          <div class="nav-item active"><div class="nav-dot"></div>Home</div>
+          <div class="nav-item"><div class="nav-dot"></div>Workouts</div>
+          <div class="nav-item"><div class="nav-dot"></div>Assess</div>
+          <div class="nav-item"><div class="nav-dot"></div>Profile</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

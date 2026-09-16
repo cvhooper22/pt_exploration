@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Design Explorations</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root {
+    --bg: #f2f5f9;
+    --card-bg: #ffffff;
+    --text: #151a21;
+    --muted: #5f6875;
+    --accent: #1762d6;
+    --border: rgba(21,26,33,0.1);
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 48px 20px 80px;
+  }
+  header {
+    margin-bottom: 40px;
+  }
+  .eyebrow {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+  h1 {
+    font-size: 32px;
+    letter-spacing: -0.02em;
+    margin: 0 0 10px;
+  }
+  header p {
+    color: var(--muted);
+    font-size: 16px;
+    line-height: 1.5;
+    max-width: 640px;
+    margin: 0;
+  }
+  h2.section-title {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 44px 0 14px;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 14px;
+  }
+  a.card {
+    display: block;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 18px 20px;
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.15s ease, transform 0.15s ease;
+  }
+  a.card:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+  }
+  .card-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .card-desc {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.4;
+  }
+  .card-arrow {
+    float: right;
+    color: var(--accent);
+    font-size: 14px;
+  }
+  .subtitle1 {
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .view-description {
+    margin-bottom: 1rem;
+  }
+  footer {
+    margin-top: 56px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Design Explorations</div>
+    <h1>App Concepts</h1>
+    <p>These are all just pages that are brainstorming, nothing set in stone, just to get the juices flowing on what this app could look like. They might be showing features that we don't need right now.</p>
+  </header>
+  <div class="subtitle1">
+    Some of these pages are best viewed on a phone-sized window or with your browser narrowed.
+    Requires an internet connection for best viewing experience.
+  </div>
+
+  <h2 class="section-title">General Color/Design Examples</h2>
+  <div class="subtitle1 view-description">
+    Shows what a login page could look like to show a few different design directions we can go.
+  </div>
+  <div class="grid">
+    <a class="card" href="mobile-screens-comparison.html">
+      <div class="card-title">Mobile Screens Comparison <span class="card-arrow">→</span></div>
+      <div class="card-desc">Side-by-side reference comparison of some different design/color scheme directions we can take.</div>
+    </a>
+  </div>
+
+  <h2 class="section-title">Patient App — Home &amp; Navigation</h2>
+  <div class="subtitle1 view-description">
+    An example of what a home page and app might show to a patient. You can click around once you get in this page and explore different parts of it.
+  </div>
+  <div class="grid">
+    <a class="card" href="app-home.html">
+      <div class="card-title">App Home <span class="card-arrow">→</span></div>
+      <div class="card-desc">Home screen with greeting, next-assessment card, and progress.</div>
+    </a>
+  </div>
+
+  <h2 class="section-title">Foundations Assessment</h2>
+  <div class="subtitle1 view-description">
+    An example of what the assessment could look like. You can click through the different parts of this page and get an idea of what we can show patients as they're trying to complete the different parts of the assessment.
+  </div>
+  <div class="subtitle1 view-description">
+    These three pages all work the same but have different designs.
+  </div>
+  <div class="grid">
+    <a class="card" href="foundations-assessment.html">
+      <div class="card-title">Foundations Assessment - Dark Background<span class="card-arrow">→</span></div>
+      <div class="card-desc">The core in-app assessment flow — instructions, stopwatch, recording.</div>
+    </a>
+    <a class="card" href="foundations-assessment-light.html">
+      <div class="card-title">Foundations Assessment — Light <span class="card-arrow">→</span></div>
+      <div class="card-desc">A lighter, more minimal visual treatment of the same flow.</div>
+    </a>
+    <a class="card" href="foundations-assessment-lively.html">
+      <div class="card-title">Foundations Assessment — Lively <span class="card-arrow">→</span></div>
+      <div class="card-desc">A more energetic, colorful treatment of the same flow.</div>
+    </a>
+  </div>
+
+  <h2 class="section-title">Therapist Portal</h2>
+  <div class="subtitle1 view-description">
+    An example of what the therapist's experience could look like to view and track progress. This page has a lot of stuff that we probably wouldn't do in a first version but could give an idea of capabilities that could be added later. You can click through the different parts of this page.
+  </div>
+  <div class="grid">
+    <a class="card" href="pt-portal-home.html">
+      <div class="card-title">Portal — Home <span class="card-arrow">→</span></div>
+      <div class="card-desc">Caseload, assessments due, message queue, and bundles overview.</div>
+    </a>
+    <a class="card" href="pt-portal-patient-setup.html">
+      <div class="card-title">Portal — Patient Setup <span class="card-arrow">→</span></div>
+      <div class="card-desc">Assigning sections, goals, schedule, and flags for a patient.</div>
+    </a>
+  </div>
+</div>
+</body>
+</html>
